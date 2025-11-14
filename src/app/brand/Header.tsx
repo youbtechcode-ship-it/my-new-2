@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { Menu, X, ArrowRight, Book, Youtube, Handshake } from 'lucide-react';
+import { Menu, X, ArrowRight, User, Briefcase, Building2 } from 'lucide-react';
 import ThemeSelector from './ThemeSelector';
 import Link from 'next/link';
 
@@ -18,18 +18,7 @@ const Card = ({ title, icon, className, children }) => {
     );
 };
 
-const CardLink = ({ text, href, external = false }) => {
-    const handleLinkClick = (e) => {
-        if (!external && href.startsWith('/brand#')) {
-            e.preventDefault();
-            const targetId = href.split('#')[1];
-            const targetElement = document.getElementById(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    };
-    
+const CardLink = ({ text, href, external = false, onClick }) => {
     const content = (
         <p className="flex justify-between items-center text-sm font-medium hover:text-accent transition-colors">
             {text}
@@ -38,14 +27,14 @@ const CardLink = ({ text, href, external = false }) => {
     );
 
     if (external) {
-        return <a href={href} target="_blank" rel="noopener noreferrer" className="block mt-2">{content}</a>;
+        return <a href={href} target="_blank" rel="noopener noreferrer" className="block mt-2" onClick={onClick}>{content}</a>;
     }
     
-    return <Link href={href} onClick={handleLinkClick} className="block mt-2">{content}</Link>;
+    return <Link href={href} onClick={onClick} className="block mt-2">{content}</Link>;
 };
 
 
-const CardNav = () => {
+const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
     const container = useRef(null);
     const tl = useRef<gsap.core.Timeline>();
@@ -75,14 +64,22 @@ const CardNav = () => {
         }
     }, [isOpen]);
     
-    const handleLinkClick = () => {
+    const handleLinkClick = (e, href) => {
+        if (href && href.startsWith('/brand#')) {
+            e.preventDefault();
+            const targetId = href.split('#')[1];
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
       setIsOpen(false);
     }
 
     return (
         <header ref={container} className="fixed top-0 left-0 w-full z-50 p-4">
             <div className="container mx-auto flex justify-between items-center">
-                <Link href="/brand" className="font-bold font-headline text-lg">YBT</Link>
+                <Link href="/" className="font-bold font-headline text-lg">YBT</Link>
                 <div className="flex items-center gap-4">
                     <ThemeSelector />
                     <button onClick={() => setIsOpen(!isOpen)} className="bg-card p-2 rounded-full shadow-md border border-border">
@@ -102,24 +99,19 @@ const CardNav = () => {
                     </button>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div onClick={handleLinkClick}>
-                            <Card title="About Us" icon={<Book size={20} />} className="bg-[var(--card-about-bg)] text-white">
-                                <CardLink text="Who is Brajendra?" href="/brand#about" />
-                                <CardLink text="Audience & Reach" href="/brand#audience" />
-                            </Card>
-                        </div>
-                        <div onClick={handleLinkClick}>
-                            <Card title="Our Work" icon={<Youtube size={20} />} className="bg-[var(--card-work-bg)] text-white">
-                                <CardLink text="Past Collaborations" href="/brand#portfolio" />
-                                <CardLink text="YouTube Channel" href="https://youtube.com/@you_b_tech" external />
-                            </Card>
-                        </div>
-                        <div onClick={handleLinkClick}>
-                            <Card title="Collaborate" icon={<Handshake size={20} />} className="bg-accent text-accent-foreground">
-                                <CardLink text="Start Your Inquiry" href="/collaborate" />
-                                <CardLink text="Our Process" href="/brand#process" />
-                            </Card>
-                        </div>
+                        <Card title="Subscriber" icon={<User size={20} />} className="bg-[var(--card-about-bg)] text-white">
+                            <CardLink text="Send a Message" href="/subscriber" onClick={(e) => handleLinkClick(e, '/subscriber')} />
+                            <CardLink text="Why Connect?" href="/subscriber#why-connect" onClick={(e) => handleLinkClick(e, '/subscriber#why-connect')} />
+                        </Card>
+                        <Card title="Freelancer" icon={<Briefcase size={20} />} className="bg-[var(--card-work-bg)] text-white">
+                            <CardLink text="Apply Now" href="/freelancer" onClick={(e) => handleLinkClick(e, '/freelancer')} />
+                            <CardLink text="See Benefits" href="/freelancer#benefits" onClick={(e) => handleLinkClick(e, '/freelancer#benefits')} />
+                        </Card>
+                         <Card title="Brand" icon={<Building2 size={20} />} className="bg-accent text-accent-foreground">
+                            <CardLink text="Collaborate" href="/brand" onClick={(e) => handleLinkClick(e, '/brand')} />
+                            <CardLink text="Our Process" href="/brand#process" onClick={(e) => handleLinkClick(e, '/brand#process')} />
+                            <CardLink text="Start Inquiry" href="/collaborate" onClick={(e) => handleLinkClick(e, '/collaborate')} />
+                        </Card>
                     </div>
                 </div>
             </div>
@@ -127,4 +119,4 @@ const CardNav = () => {
     );
 };
 
-export default CardNav;
+export default Header;

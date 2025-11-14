@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, FastForward, Lock, MessageCircle, ShieldOff } from 'lucide-react';
 import SubscriberForm from './SubscriberForm';
+import Header from '../brand/Header';
+import Footer from '../brand/Footer';
 
 const messageTypes = [
   'General message',
@@ -35,7 +37,9 @@ const valuePoints = [
 
 export default function SubscriberPage() {
   return (
-    <div className="container mx-auto px-4 py-12 md:py-20">
+    <>
+    <Header />
+    <main className="container mx-auto px-4 py-24 md:py-32">
       <section className="text-center">
         <h1 className="text-4xl md:text-6xl font-headline font-bold">Connect With YBT</h1>
         <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -55,7 +59,7 @@ export default function SubscriberPage() {
         </div>
       </section>
 
-      <section className="mt-16">
+      <section id="why-connect" className="mt-16">
         <h2 className="text-3xl font-headline font-semibold text-center mb-8">Why Connect With Us?</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {valuePoints.map((point) => (
@@ -82,6 +86,8 @@ export default function SubscriberPage() {
           </CardContent>
         </Card>
       </section>
-    </div>
+    </main>
+    <Footer />
+    </>
   );
 }

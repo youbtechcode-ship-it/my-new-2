@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import CardNav from './CardNav';
+import Header from './Header';
 import HeroSection from './HeroSection';
 import AboutSection from './AboutSection';
 import AudienceSection from './AudienceSection';
@@ -14,7 +14,7 @@ import Footer from './Footer';
 export default function BrandPage() {
   return (
       <div className="bg-background text-foreground font-body">
-        <CardNav />
+        <Header />
         <main>
           <HeroSection />
           <AboutSection />

@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import FreelancerForm from './FreelancerForm';
 import { Banknote, Briefcase, Component, FileText, ImageIcon, LayoutGrid, Paintbrush, PenTool, Sparkles, TrendingUp, UserCheck } from 'lucide-react';
+import Header from '../brand/Header';
+import Footer from '../brand/Footer';
 
 const benefits = [
     { icon: <Banknote className="w-8 h-8 text-accent" />, title: 'Instant Payments', description: 'Get paid quickly after your work is approved.' },
@@ -20,7 +22,9 @@ const workCategories = [
 
 export default function FreelancerPage() {
   return (
-    <div className="container mx-auto px-4 py-12 md:py-20">
+    <>
+    <Header />
+    <main className="container mx-auto px-4 py-24 md:py-32">
       <section className="text-center">
         <h1 className="text-4xl md:text-6xl font-headline font-bold">Work With YBT</h1>
         <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -28,7 +32,7 @@ export default function FreelancerPage() {
         </p>
       </section>
 
-      <section className="mt-16">
+      <section id="benefits" className="mt-16">
         <h2 className="text-3xl font-headline font-semibold text-center mb-8">Benefits of Working With Us</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {benefits.map(b => (
@@ -67,6 +71,8 @@ export default function FreelancerPage() {
           </CardContent>
         </Card>
       </section>
-    </div>
+    </main>
+    <Footer />
+    </>
   );
 }
