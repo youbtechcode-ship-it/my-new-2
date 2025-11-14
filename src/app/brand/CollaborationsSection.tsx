@@ -86,9 +86,8 @@ const CollaborationsSection = () => {
                             <Image
                               src={`https://i.ytimg.com/vi/${collab.videoId}/hqdefault.jpg`}
                               alt={`Thumbnail for ${collab.brand} collaboration`}
-                              layout="fill"
-                              objectFit="cover"
-                              className="transition-transform duration-500 group-hover:scale-110"
+                              fill
+                              className="object-cover transition-transform duration-500 group-hover:scale-110"
                             />
                              <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 <PlayCircle className="w-16 h-16 text-white/80 transform transition-transform duration-300 group-hover:scale-110" />
