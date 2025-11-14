@@ -445,8 +445,12 @@ const Step4 = ({ budgetTier, budgetProgress }: { budgetTier: string; budgetProgr
                 </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                <SelectItem value="upi">UPI (for India)</SelectItem>
-                <SelectItem value="wise">Wise (International)</SelectItem>
+                    <SelectItem value="upi">UPI (for India)</SelectItem>
+                    <SelectItem value="wise">Wise (International)</SelectItem>
+                    <SelectItem value="paypal">PayPal</SelectItem>
+                    <SelectItem value="debit-card">Debit Card (via PayPal)</SelectItem>
+                    <SelectItem value="credit-card">Credit Card (via PayPal)</SelectItem>
+                    <SelectItem value="bank-account">Bank Account (via PayPal)</SelectItem>
                 </SelectContent>
             </Select>
             <FormMessage />
