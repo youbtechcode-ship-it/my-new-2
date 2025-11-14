@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion';
 import { ArrowDown, Download } from 'lucide-react';
 import FadeInSection from './FadeInSection';
+import { Button } from '@/components/ui/button';
 
 const HeroSection = () => {
     const scrollToCTA = () => {
@@ -33,18 +34,21 @@ const HeroSection = () => {
                         Work with You B Tech to reach a high-intent tech audience through authentic and creative storytelling.
                     </p>
                     <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
-                        <button
+                        <Button
                             onClick={scrollToCTA}
-                            className="bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold px-8 py-4 rounded-full shadow-lg transition-transform duration-300 hover:scale-105 flex items-center gap-2"
+                            size="lg"
+                            className="bg-primary text-primary-foreground font-bold px-8 py-4 rounded-full shadow-lg transition-transform duration-300 hover:scale-105"
                         >
                             Start Collaboration <ArrowDown size={20} />
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             disabled
-                            className="bg-card border border-border font-bold px-8 py-4 rounded-full shadow-md flex items-center gap-2 cursor-not-allowed opacity-50"
+                            variant="outline"
+                            size="lg"
+                            className="font-bold px-8 py-4 rounded-full shadow-md cursor-not-allowed opacity-50"
                         >
                            Download Media Kit <Download size={20} />
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </section>
