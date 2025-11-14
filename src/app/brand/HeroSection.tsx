@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowDown, Download } from 'lucide-react';
 import FadeInSection from './FadeInSection';
 import { Button } from '@/components/ui/button';
+import DotGrid from './DotGrid';
 
 const HeroSection = () => {
     const scrollToCTA = () => {
@@ -12,15 +13,20 @@ const HeroSection = () => {
     return (
         <FadeInSection>
             <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden">
-                <div className="absolute inset-0 bg-dot-grid-background mask-image-gradient"></div>
-                 <motion.div
-                    className="absolute inset-0 bg-dot-grid"
-                    animate={{ backgroundPosition: ['0% 0%', '100% 100%'] }}
-                    transition={{ duration: 200, ease: "linear", repeat: Infinity, repeatType: "mirror" }}
-                 ></motion.div>
-
+                <DotGrid
+                    className="absolute inset-0"
+                    dotSize={2}
+                    gap={25}
+                    baseColor="hsl(var(--accent-hsl))"
+                    activeColor="hsl(var(--primary-hsl))"
+                 />
                 <div className="relative z-10">
-                    <h1 className="font-headline text-6xl md:text-8xl font-black">
+                    <motion.h1 
+                        className="font-headline text-6xl md:text-8xl font-black"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                    >
                         Let’s Collaborate{' '}
                         <motion.span 
                             className="inline-block"
@@ -29,11 +35,21 @@ const HeroSection = () => {
                         >
                             🤝
                         </motion.span>
-                    </h1>
-                    <p className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground">
+                    </motion.h1>
+                    <motion.p 
+                        className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                    >
                         Work with You B Tech to reach a high-intent tech audience through authentic and creative storytelling.
-                    </p>
-                    <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
+                    </motion.p>
+                    <motion.div 
+                        className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.6 }}
+                    >
                         <Button
                             onClick={scrollToCTA}
                             size="lg"
@@ -49,7 +65,7 @@ const HeroSection = () => {
                         >
                            Download Media Kit <Download size={20} />
                         </Button>
-                    </div>
+                    </motion.div>
                 </div>
             </section>
         </FadeInSection>
