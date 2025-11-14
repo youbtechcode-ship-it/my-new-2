@@ -1,0 +1,234 @@
+{
+  "entities": {
+    "Subscriber": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Subscriber",
+      "type": "object",
+      "description": "Represents a subscriber who submits a message through the subscriber landing page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Subscriber entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The subscriber's full name."
+        },
+        "whatsappNumber": {
+          "type": "string",
+          "description": "The subscriber's WhatsApp number."
+        },
+        "message": {
+          "type": "string",
+          "description": "The message submitted by the subscriber."
+        },
+        "messageType": {
+          "type": "string",
+          "description": "The type of message (e.g., General message, Feedback, Suggestions, Product questions, Personal message)."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "The date and time when the subscriber submitted the form.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "whatsappNumber",
+        "message",
+        "messageType"
+      ]
+    },
+    "Freelancer": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Freelancer",
+      "type": "object",
+      "description": "Represents a freelancer who submits an application through the freelancer landing page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Freelancer entity."
+        },
+        "fullName": {
+          "type": "string",
+          "description": "The freelancer's full name."
+        },
+        "email": {
+          "type": "string",
+          "description": "The freelancer's email address.",
+          "format": "email"
+        },
+        "mobileNumber": {
+          "type": "string",
+          "description": "The freelancer's mobile number."
+        },
+        "portfolioLink": {
+          "type": "string",
+          "description": "The freelancer's portfolio link.",
+          "format": "uri"
+        },
+        "skills": {
+          "type": "array",
+          "description": "The freelancer's skills.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "experience": {
+          "type": "string",
+          "description": "The freelancer's experience."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description provided by the freelancer."
+        },
+        "fileUpload": {
+          "type": "string",
+          "description": "Link to uploaded file (optional)."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "The date and time when the freelancer submitted the form.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "fullName",
+        "email",
+        "mobileNumber",
+        "portfolioLink",
+        "skills",
+        "experience",
+        "description"
+      ]
+    },
+    "BrandCollaboration": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "BrandCollaboration",
+      "type": "object",
+      "description": "Represents a brand's collaboration request submitted through the brand landing page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the BrandCollaboration entity."
+        },
+        "brandName": {
+          "type": "string",
+          "description": "The brand's name."
+        },
+        "contactPerson": {
+          "type": "string",
+          "description": "The contact person's name."
+        },
+        "workEmail": {
+          "type": "string",
+          "description": "The contact person's work email.",
+          "format": "email"
+        },
+        "mobileNumber": {
+          "type": "string",
+          "description": "The contact person's mobile number."
+        },
+        "campaignDescription": {
+          "type": "string",
+          "description": "A description of the campaign."
+        },
+        "productLink": {
+          "type": "string",
+          "description": "A link to the product.",
+          "format": "uri"
+        },
+        "estimatedBudget": {
+          "type": "number",
+          "description": "The estimated budget for the collaboration."
+        },
+        "deadline": {
+          "type": "string",
+          "description": "The deadline for the collaboration.",
+          "format": "date-time"
+        },
+        "fileUpload": {
+          "type": "string",
+          "description": "Link to uploaded file (optional)."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "The date and time when the brand submitted the form.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "brandName",
+        "contactPerson",
+        "workEmail",
+        "mobileNumber",
+        "campaignDescription",
+        "productLink",
+        "estimatedBudget",
+        "deadline"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/subscribers/{subscriberId}",
+        "definition": {
+          "entityName": "Subscriber",
+          "schema": {
+            "$ref": "#/backend/entities/Subscriber"
+          },
+          "description": "Stores subscriber form submission data. Includes fields for name, WhatsApp number, message, message type, and submission date.",
+          "params": [
+            {
+              "name": "subscriberId",
+              "description": "Unique identifier for the subscriber document."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/freelancers/{freelancerId}",
+        "definition": {
+          "entityName": "Freelancer",
+          "schema": {
+            "$ref": "#/backend/entities/Freelancer"
+          },
+          "description": "Stores freelancer application data. Includes fields for full name, email, mobile number, portfolio link, skills, experience, description, file upload, and submission date.",
+          "params": [
+            {
+              "name": "freelancerId",
+              "description": "Unique identifier for the freelancer document."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/brand_collaborations/{brandCollaborationId}",
+        "definition": {
+          "entityName": "BrandCollaboration",
+          "schema": {
+            "$ref": "#/backend/entities/BrandCollaboration"
+          },
+          "description": "Stores brand collaboration request data. Includes fields for brand name, contact person, work email, mobile number, campaign description, product link, estimated budget, deadline, file upload, and submission date.",
+          "params": [
+            {
+              "name": "brandCollaborationId",
+              "description": "Unique identifier for the brand collaboration document."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "Given the application's requirement to store form submission data from different landing pages (Subscriber, Freelancer, and Brand) in Firestore without user authentication, the proposed data structure focuses on segregation to simplify security rules. Since there is no authentication, and the requirement is simply to store the data, segregation provides a clear and maintainable structure. Each landing page submission will have its own top-level collection. This approach avoids complex rules based on document content, as each collection serves a distinct purpose. The design prioritizes simplicity and avoids hierarchical dependencies to ensure atomic writes.The collections are named semantically to reflect the source of data (e.g., 'subscribers', 'freelancers', and 'brand_collaborations'). This segregation ensures data clarity and predictable access patterns, simplifying querying and data management."
+  }
+}

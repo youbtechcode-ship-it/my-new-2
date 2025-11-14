@@ -1,0 +1,60 @@
+/**
+ * @fileoverview Firestore Security Rules for Prototyping.
+ *
+ * Core Philosophy:
+ * This ruleset provides basic protection for data stored in Firestore, focusing on preventing unauthorized data access and modification. Since there is no user authentication, the rulesets ensure that all the data stored can be read by anyone and created, updated, or deleted by anyone. However, this setup is intended for the prototyping phase only.
+ *
+ * Data Structure:
+ * The Firestore database consists of three top-level collections:
+ * - /subscribers/{subscriberId}: Stores data from the subscriber landing page.
+ * - /freelancers/{freelancerId}: Stores data from the freelancer landing page.
+ * - /brand_collaborations/{brandCollaborationId}: Stores data from the brand collaboration landing page.
+ *
+ * Key Security Decisions:
+ * - No authentication is required for read or write access in the initial prototype.
+ * - All read and write access is open to all users, including unauthenticated users.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Allows anyone to read and write Subscriber data.
+     * @path /subscribers/{subscriberId}
+     * @allow (get, list) Any user can read subscriber data.
+     * @allow (create, update, delete) Any user can create, update, or delete subscriber data.
+     * @deny No denial conditions.
+     * @principle Allows open read and write access for prototyping purposes.
+     */
+    match /subscribers/{subscriberId} {
+      allow get, list: if true;
+      allow create, update, delete: if true;
+    }
+
+    /**
+     * @description Allows anyone to read and write Freelancer data.
+     * @path /freelancers/{freelancerId}
+     * @allow (get, list) Any user can read freelancer data.
+     * @allow (create, update, delete) Any user can create, update, or delete freelancer data.
+     * @deny No denial conditions.
+     * @principle Allows open read and write access for prototyping purposes.
+     */
+    match /freelancers/{freelancerId} {
+      allow get, list: if true;
+      allow create, update, delete: if true;
+    }
+
+    /**
+     * @description Allows anyone to read and write BrandCollaboration data.
+     * @path /brand_collaborations/{brandCollaborationId}
+     * @allow (get, list) Any user can read brand collaboration data.
+     * @allow (create, update, delete) Any user can create, update, or delete brand collaboration data.
+     * @deny No denial conditions.
+     * @principle Allows open read and write access for prototyping purposes.
+     */
+    match /brand_collaborations/{brandCollaborationId} {
+      allow get, list: if true;
+      allow create, update, delete: if true;
+    }
+  }
+}
