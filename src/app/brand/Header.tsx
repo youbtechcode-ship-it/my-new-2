@@ -8,6 +8,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Button } from '@/components/ui/button';
+import ThemeSelector from './ThemeSelector';
 
 const navLinks = [
   { href: '/subscriber', label: 'Connect' },
@@ -35,6 +36,7 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center gap-1">
+             <ThemeSelector />
             {/* Mobile Navigation */}
             <div className="sm:hidden">
               <Sheet>
