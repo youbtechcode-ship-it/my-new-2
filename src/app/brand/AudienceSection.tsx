@@ -69,29 +69,25 @@ const AudienceSection = () => {
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-                        <GlareHover>
-                            <DemographicChart
-                                title="Audience by Country"
-                                data={[
-                                    { name: 'India', value: 60, color: 'hsl(var(--chart-1))' },
-                                    { name: 'United States', value: 19, color: 'hsl(var(--chart-2))' },
-                                    { name: 'Brazil', value: 5, color: 'hsl(var(--chart-3))' },
-                                    { name: 'United Kingdom', value: 4, color: 'hsl(var(--chart-4))' },
-                                    { name: 'Other', value: 12, color: 'hsl(var(--chart-5))' },
-                                ]}
-                            />
-                        </GlareHover>
-                        <GlareHover>
-                            <DemographicChart
-                                title="Audience by Age"
-                                data={[
-                                    { name: '18-24', value: 42.2, color: 'hsl(var(--chart-1))' },
-                                    { name: '25-34', value: 33.0, color: 'hsl(var(--chart-2))' },
-                                    { name: '35-44', value: 15.8, color: 'hsl(var(--chart-3))' },
-                                    { name: '45+', value: 9.0, color: 'hsl(var(--chart-4))' },
-                                ]}
-                            />
-                        </GlareHover>
+                        <DemographicChart
+                            title="Audience by Country"
+                            data={[
+                                { name: 'India', value: 60, color: 'hsl(var(--chart-1))' },
+                                { name: 'United States', value: 19, color: 'hsl(var(--chart-2))' },
+                                { name: 'Brazil', value: 5, color: 'hsl(var(--chart-3))' },
+                                { name: 'United Kingdom', value: 4, color: 'hsl(var(--chart-4))' },
+                                { name: 'Other', value: 12, color: 'hsl(var(--chart-5))' },
+                            ]}
+                        />
+                        <DemographicChart
+                            title="Audience by Age"
+                            data={[
+                                { name: '18-24', value: 42.2, color: 'hsl(var(--chart-1))' },
+                                { name: '25-34', value: 33.0, color: 'hsl(var(--chart-2))' },
+                                { name: '35-44', value: 15.8, color: 'hsl(var(--chart-3))' },
+                                { name: '45+', value: 9.0, color: 'hsl(var(--chart-4))' },
+                            ]}
+                        />
                     </div>
 
                     <GlareHover>
