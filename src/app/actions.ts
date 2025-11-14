@@ -2,7 +2,7 @@
 
 import { z } from 'zod';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { initializeFirebase } from '@/firebase';
 import { analyzeLeadQuality } from '@/ai/flows/analyze-lead-quality';
 import { subscriberSchema, freelancerSchema, brandSchema } from '@/lib/schemas';
 
@@ -15,10 +15,10 @@ export async function submitSubscriberForm(
   data: z.infer<typeof subscriberSchema>
 ): Promise<FormState> {
   try {
+    const { firestore } = initializeFirebase();
     const validatedData = subscriberSchema.parse(data);
-    await addDoc(collection(db, 'submissions'), {
+    await addDoc(collection(firestore, 'subscribers'), {
       ...validatedData,
-      type: 'subscriber',
       submittedAt: serverTimestamp(),
     });
     return { success: true, message: 'Thank you! Your message has been delivered.' };
@@ -32,6 +32,7 @@ export async function submitFreelancerForm(
   data: z.infer<typeof freelancerSchema>
 ): Promise<FormState> {
   try {
+    const { firestore } = initializeFirebase();
     const validatedData = freelancerSchema.parse(data);
 
     const aiAnalysis = await analyzeLeadQuality({
@@ -39,9 +40,8 @@ export async function submitFreelancerForm(
       leadType: 'freelancer',
     });
 
-    await addDoc(collection(db, 'submissions'), {
+    await addDoc(collection(firestore, 'freelancers'), {
       ...validatedData,
-      type: 'freelancer',
       submittedAt: serverTimestamp(),
       aiAnalysis,
     });
@@ -59,6 +59,7 @@ export async function submitBrandForm(
   data: z.infer<typeof brandSchema>
 ): Promise<FormState> {
   try {
+    const { firestore } = initializeFirebase();
     const validatedData = brandSchema.parse(data);
 
     const aiAnalysis = await analyzeLeadQuality({
@@ -66,9 +67,8 @@ export async function submitBrandForm(
         leadType: 'brand',
     });
 
-    await addDoc(collection(db, 'submissions'), {
+    await addDoc(collection(firestore, 'brand_collaborations'), {
       ...validatedData,
-      type: 'brand',
       submittedAt: serverTimestamp(),
       aiAnalysis,
     });
