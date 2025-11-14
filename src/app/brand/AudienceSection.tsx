@@ -8,7 +8,7 @@ import DemographicChart from './DemographicChart';
 import FadeInSection from './FadeInSection';
 import GlareHover from './GlareHover';
 
-const SocialStatCard = ({ icon, label, value, suffix, className, description, link }) => {
+const SocialStatCard = ({ icon, value, suffix, className, description, link }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
@@ -19,11 +19,9 @@ const SocialStatCard = ({ icon, label, value, suffix, className, description, li
                 <div className={`p-8 rounded-2xl text-center h-full flex flex-col justify-center items-center text-white ${className}`}>
                     <div className="mb-4">{icon}</div>
                     <div className="text-5xl font-bold font-headline mb-2">
-                        {isInView && <CountUp start={0} end={value} duration={2.5} separator="," decimals={value % 1 !== 0 ? 1 : 0} />}
-                        {suffix}
+                        {isInView && <CountUp start={0} end={value} duration={2.5} separator="," decimals={value % 1 !== 0 ? 1 : 0} suffix={suffix} />}
                     </div>
-                    <p className="text-xl font-semibold">{label}</p>
-                    <p className="text-white/80 mt-1">{description}</p>
+                    <p className="text-xl font-semibold">{description}</p>
                 </div>
             </GlareHover>
         </a>
@@ -57,27 +55,24 @@ const AudienceSection = () => {
                     <div className="flex flex-wrap justify-center gap-8 mb-16">
                         <SocialStatCard 
                             icon={<Youtube size={48} />} 
-                            label="60K+" 
                             value={60}
-                            suffix=""
+                            suffix="K+"
                             description="YouTube Subscribers"
                             className="bg-red-600"
                             link="https://youtube.com/@you_b_tech" 
                         />
                         <SocialStatCard 
                             icon={<Instagram size={48} />} 
-                            label="2.5K+" 
                             value={2.5}
-                            suffix=""
+                            suffix="K+"
                             description="Instagram Followers"
                             className="bg-gradient-to-br from-purple-500 via-pink-500 to-red-500"
                             link="https://instagram.com/youbtech" 
                         />
                         <SocialStatCard 
                             icon={<Send size={48} />} 
-                            label="8.9K+" 
                             value={8.9}
-                            suffix=""
+                            suffix="K+"
                             description="Telegram Members"
                             className="bg-sky-500"
                             link="https://t.me/youbtech" 
