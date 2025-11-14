@@ -15,7 +15,7 @@ const SocialBrowserModal = ({ isOpen, setIsOpen, url }) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-4xl h-[90vh] p-0 flex flex-col">
-        <DialogHeader className="sr-only">
+        <DialogHeader>
             <DialogTitle>Social Media Browser</DialogTitle>
         </DialogHeader>
         <header className="flex items-center p-2 bg-card border-b border-border rounded-t-lg">
