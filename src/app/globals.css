@@ -30,41 +30,9 @@
     --card-work-bg: #81B29A;
   }
  
-  .dark[data-theme="youbtech"] {
-    --background-hsl: 224 71% 4%;
-    --foreground-hsl: 210 20% 98%;
-    --card-hsl: 224 71% 8%;
-    --card-foreground-hsl: 210 20% 98%;
-    --popover-hsl: 224 71% 4%;
-    --popover-foreground-hsl: 210 20% 98%;
-    --primary-hsl: 210 20% 98%;
-    --primary-foreground-hsl: 224 71% 4%;
-    --secondary-hsl: 215 28% 17%;
-    --secondary-foreground-hsl: 210 20% 98%;
-    --muted-hsl: 215 28% 27%;
-    --muted-foreground-hsl: 215 20% 65%;
-    --accent-hsl: 265 63% 62%;
-    --accent-foreground-hsl: 210 20% 98%;
-    --destructive-hsl: 0 63% 31%;
-    --destructive-foreground-hsl: 210 20% 98%;
-    --border-hsl: 215 28% 17%;
-    --input-hsl: 215 28% 17%;
-    --ring-hsl: 265 63% 62%;
-
-    --card-about-bg: #3D405B;
-    --card-work-bg: #81B29A;
-  }
-
   html[data-theme="ocean"] {
     --primary-hsl: 205 92% 21%;
     --accent-hsl: 180 100% 32%;
-    --card-about-bg: #033F63;
-    --card-work-bg: #28666E;
-  }
-  .dark[data-theme="ocean"] {
-    --background-hsl: 210 40% 9%;
-    --primary-hsl: 205 82% 71%;
-    --accent-hsl: 180 90% 62%;
     --card-about-bg: #033F63;
     --card-work-bg: #28666E;
   }
@@ -75,13 +43,6 @@
     --card-about-bg: #C70039;
     --card-work-bg: #FF5733;
   }
-  .dark[data-theme="sunset"] {
-    --background-hsl: 20 20% 10%;
-    --primary-hsl: 345 90% 79%;
-    --accent-hsl: 12 90% 70%;
-    --card-about-bg: #C70039;
-    --card-work-bg: #FF5733;
-  }
   
   html[data-theme="forest"] {
     --primary-hsl: 136 34% 29%;
@@ -89,24 +50,10 @@
     --card-about-bg: #3A5A40;
     --card-work-bg: #588157;
   }
-  .dark[data-theme="forest"] {
-    --background-hsl: 120 10% 10%;
-    --primary-hsl: 136 44% 79%;
-    --accent-hsl: 126 33% 82%;
-     --card-about-bg: #3A5A40;
-    --card-work-bg: #588157;
-  }
 
   html[data-theme="rose"] {
     --primary-hsl: 237 22% 30%;
     --accent-hsl: 12 71% 70%;
-    --card-about-bg: #3D405B;
-    --card-work-bg: #E07A5F;
-  }
-  .dark[data-theme="rose"] {
-    --background-hsl: 30 15% 10%;
-    --primary-hsl: 237 32% 80%;
-    --accent-hsl: 12 81% 80%;
     --card-about-bg: #3D405B;
     --card-work-bg: #E07A5F;
   }
@@ -117,13 +64,6 @@
     --card-about-bg: #3C096C;
     --card-work-bg: #6A057F;
   }
-  .dark[data-theme="indigo"] {
-    --background-hsl: 270 20% 10%;
-    --primary-hsl: 279 71% 72%;
-    --accent-hsl: 288 81% 76%;
-    --card-about-bg: #3C096C;
-    --card-work-bg: #6A057F;
-  }
 
   html[data-theme="neutral"] {
     --primary-hsl: 0 0% 15%;
@@ -131,24 +71,10 @@
     --card-about-bg: #262626;
     --card-work-bg: #525252;
   }
-  .dark[data-theme="neutral"] {
-    --background-hsl: 0 0% 8%;
-    --primary-hsl: 0 0% 95%;
-    --accent-hsl: 0 0% 80%;
-    --card-about-bg: #262626;
-    --card-work-bg: #525252;
-  }
   
   html[data-theme="mint"] {
     --primary-hsl: 247 28% 23%;
     --accent-hsl: 167 36% 52%;
-    --card-about-bg: #2E294E;
-    --card-work-bg: #58B09C;
-  }
-  .dark[data-theme="mint"] {
-    --background-hsl: 220 20% 10%;
-    --primary-hsl: 247 38% 73%;
-    --accent-hsl: 167 46% 82%;
     --card-about-bg: #2E294E;
     --card-work-bg: #58B09C;
   }

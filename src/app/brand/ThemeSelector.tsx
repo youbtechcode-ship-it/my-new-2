@@ -2,13 +2,11 @@
 import { useTheme } from 'next-themes';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { Moon, Palette, Check, Sun } from 'lucide-react';
-import { Switch } from '@/components/ui/switch';
+import { Palette, Check } from 'lucide-react';
 import { themes, type Theme } from '@/lib/themes';
 
 const ThemeSelector = () => {
-    const { theme: currentTheme, setTheme, resolvedTheme } = useTheme();
-    const mode = resolvedTheme;
+    const { theme: currentTheme, setTheme } = useTheme();
 
     return (
         <Popover>
@@ -19,18 +17,6 @@ const ThemeSelector = () => {
             </PopoverTrigger>
             <PopoverContent className="w-64 p-4" align="end">
                 <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                        <label htmlFor="dark-mode-switch" className="text-sm font-medium flex items-center gap-2">
-                            {mode === 'dark' ? <Moon size={16} /> : <Sun size={16} />}
-                            <span>Dark Mode</span>
-                        </label>
-                        <Switch
-                            id="dark-mode-switch"
-                            checked={mode === 'dark'}
-                            onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
-                        />
-                    </div>
-                    <hr className="border-border" />
                     <div className="space-y-2">
                         <p className="text-sm font-medium">Color Palette</p>
                         <div className="grid grid-cols-2 gap-2">
