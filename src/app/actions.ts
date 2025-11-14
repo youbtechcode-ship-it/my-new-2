@@ -112,7 +112,7 @@ async function sendConfirmationToBrand(data: z.infer<typeof brandSchema>) {
             <p>In the meantime, feel free to browse our <a href="https://youtube.com/@you_b_tech">YouTube channel</a> to see more of our work.</p>
             <br>
             <p>Best regards,</p>
-            <p><strong>Brajendra Choudhary</strong></p>
+            <p><strong>Brajendra</strong></p>
             <p>Creator, You B Tech</p>
         </div>
     `;

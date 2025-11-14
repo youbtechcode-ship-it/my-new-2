@@ -44,7 +44,7 @@ const AboutSection = () => {
             <div className={isDesktop ? 'lg:sticky top-28' : ''}>
               <Image
                 src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhoXU2S_A4w-vdhJPMi22QCi0P_iL9Gg2uM5KzCgWq-I3hss_8pBprN9mKBYUuMZo9H3d3QWkPZFgB7Ld-dKfw7xTf_m-m9yG8Hh9ZlcqXu_tL1uG0Yx94g2m0sP0Z3n0c5W1s9J2n1/s1600/brajendra-choudhary.jpg"
-                alt="Brajendra Choudhary, creator of You B Tech"
+                alt="Brajendra, creator of You B Tech"
                 width={500}
                 height={500}
                 className="rounded-3xl shadow-lg w-full h-auto object-cover transition-transform duration-300 hover:scale-105"
