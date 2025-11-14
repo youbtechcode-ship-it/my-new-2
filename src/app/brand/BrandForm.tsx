@@ -34,7 +34,7 @@ interface BrandFormProps {
 
 const steps = [
   { id: 'Step 1', name: 'Brand Details', fields: ['brandName', 'contactPerson', 'workEmail', 'productLink'], icon: User },
-  { id: 'Step 2', name: 'Overview', fields: ['videoType', 'platforms', 'description'], icon: Briefcase },
+  { id: 'Step 2', name: 'Overview', fields: ['videoType', 'productType', 'platforms', 'description'], icon: Briefcase },
   { id: 'Step 3', name: 'Assets', fields: ['assetsLink', 'keywords'], icon: FileText },
   { id: 'Step 4', name: 'Budget', fields: ['estimatedBudget', 'country', 'paymentMethod'], icon: DollarSign },
   { id: 'Step 5', name: 'Submit', fields: ['termsAgreed'], icon: Send },
@@ -55,11 +55,12 @@ export default function BrandForm({ setOpen }: BrandFormProps) {
       workEmail: '',
       productLink: '',
       videoType: 'dedicated',
+      productType: 'digital',
       description: '',
       platforms: [],
       assetsLink: '',
       keywords: '',
-      estimatedBudget: 200,
+      estimatedBudget: 300,
       country: '',
       paymentMethod: 'upi',
       termsAgreed: false,
@@ -109,10 +110,10 @@ export default function BrandForm({ setOpen }: BrandFormProps) {
   };
 
   function getBudgetTier(budget: number): [string, number] {
-    if (budget < 300) return ["⚠️ Basic Budget", (budget / 300) * 33];
-    if (budget < 700) return ["👍 Good Value", 33 + ((budget - 300) / 400) * 33];
-    if (budget < 1000) return ["💎 Great Value", 66 + ((budget - 700) / 300) * 34];
-    return ["💎 Great Value Partnership", 100];
+    if (budget < 500) return ["⚠️ Starter Collaboration", (budget / 500) * 25];
+    if (budget < 800) return ["👍 Standard Collaboration", 25 + ((budget - 500) / 300) * 25];
+    if (budget < 1000) return ["💼 Premium Collaboration", 50 + ((budget - 800) / 200) * 25];
+    return ["💎 Elite Collaboration", 75 + Math.min(25, ((budget - 1000) / 500) * 25)];
   }
 
   const generatePdf = (data: BrandFormValues) => {
@@ -132,6 +133,7 @@ export default function BrandForm({ setOpen }: BrandFormProps) {
         ['Work Email', data.workEmail],
         ['Product Link', data.productLink || 'N/A'],
         ['Video Type', data.videoType],
+        ['Product Type', data.productType],
         ['Description', data.description || 'N/A'],
         ['Platforms', data.platforms.join(', ')],
         ['Budget (USD)', `$${data.estimatedBudget}`],
@@ -263,24 +265,43 @@ const Step1 = () => (
 
 const Step2 = () => (
   <div className="space-y-6">
-    <FormField control={useFormContext().control} name="videoType" render={({ field }) => (
-      <FormItem>
-        <FormLabel>Video Type</FormLabel>
-        <Select onValueChange={field.onChange} defaultValue={field.value}>
-          <FormControl>
-            <SelectTrigger>
-              <SelectValue placeholder="Select video type" />
-            </SelectTrigger>
-          </FormControl>
-          <SelectContent>
-            <SelectItem value="dedicated">Dedicated Video</SelectItem>
-            <SelectItem value="integrated">Integrated Segment</SelectItem>
-            <SelectItem value="shorts">Shorts</SelectItem>
-          </SelectContent>
-        </Select>
-        <FormMessage />
-      </FormItem>
-    )} />
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <FormField control={useFormContext().control} name="videoType" render={({ field }) => (
+        <FormItem>
+            <FormLabel>Video Type</FormLabel>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <FormControl>
+                <SelectTrigger>
+                <SelectValue placeholder="Select video type" />
+                </SelectTrigger>
+            </FormControl>
+            <SelectContent>
+                <SelectItem value="dedicated">Dedicated Video</SelectItem>
+                <SelectItem value="integrated">Integrated Segment</SelectItem>
+                <SelectItem value="shorts">Shorts</SelectItem>
+            </SelectContent>
+            </Select>
+            <FormMessage />
+        </FormItem>
+        )} />
+        <FormField control={useFormContext().control} name="productType" render={({ field }) => (
+            <FormItem>
+                <FormLabel>Product Type</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                    <SelectTrigger>
+                    <SelectValue placeholder="Select product type" />
+                    </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                    <SelectItem value="digital">Digital</SelectItem>
+                    <SelectItem value="physical">Physical</SelectItem>
+                </SelectContent>
+                </Select>
+                <FormMessage />
+            </FormItem>
+        )} />
+    </div>
      <FormField control={useFormContext().control} name="description" render={({ field }) => (
         <FormItem>
             <FormLabel>Description/Requirement (Optional)</FormLabel>
@@ -365,15 +386,16 @@ const Step4 = ({ budgetTier, budgetProgress }: { budgetTier: string; budgetProgr
               </DialogTrigger>
               <DialogContent>
                   <DialogHeader>
-                      <DialogTitle>Budget Tiers</DialogTitle>
+                      <DialogTitle>Budget Level Guide</DialogTitle>
                   </DialogHeader>
                   <div className="prose prose-sm dark:prose-invert">
-                      <ul>
-                          <li><strong>$200 - $299:</strong> Basic integration, minimal customization.</li>
-                          <li><strong>$300 - $699:</strong> Good value with more dedicated screen time and creative input.</li>
-                          <li><strong>$700 - $999:</strong> Great value, including dedicated segments and more audience engagement.</li>
-                          <li><strong>$1000+:</strong> Premium partnership with full dedicated videos and cross-platform promotion.</li>
-                      </ul>
+                        <p>This guide helps you understand the collaboration tiers. All budgets are welcome, but a higher budget generally allows for more comprehensive and impactful campaigns.</p>
+                        <dl>
+                            <dt className='font-bold'>$300–$500: ⚠️ Starter Collaboration (Basic Budget)</dt>
+                            <dt className='font-bold mt-2'>$500–$800: 👍 Standard Collaboration (Good Level)</dt>
+                            <dt className='font-bold mt-2'>$800–$1000: 💼 Premium Collaboration (Great Value)</dt>
+                            <dt className='font-bold mt-2'>$1000+: 💎 Elite Collaboration (High Performance Partnership)</dt>
+                        </dl>
                   </div>
               </DialogContent>
           </Dialog>
@@ -448,6 +470,7 @@ const Step5 = () => {
                 {values.productLink && <p><strong>Website:</strong> {values.productLink}</p>}
                 <p><strong>Budget:</strong> ${values.estimatedBudget}</p>
                 <p><strong>Video Type:</strong> {values.videoType}</p>
+                <p><strong>Product Type:</strong> {values.productType}</p>
                 {values.description && <p><strong>Description:</strong> {values.description}</p>}
                 <p><strong>Platforms:</strong> {values.platforms.join(', ')}</p>
             </div>

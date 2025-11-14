@@ -24,11 +24,14 @@ export const brandSchema = z.object({
   videoType: z.enum(['dedicated', 'integrated', 'shorts'], {
     errorMap: () => ({ message: "Please select a video type." }),
   }),
+  productType: z.enum(['digital', 'physical'], {
+    errorMap: () => ({ message: "Please select a product type." }),
+  }),
   description: z.string().optional(),
   platforms: z.array(z.string()).nonempty({ message: 'Please select at least one platform.' }),
   assetsLink: z.string().url().optional().or(z.literal('')),
   keywords: z.string().optional(),
-  estimatedBudget: z.number().min(200, 'Budget must be at least $200 USD.'),
+  estimatedBudget: z.number().min(300, 'Budget must be at least $300 USD.'),
   country: z.string().min(1, 'Please select your country.'),
   paymentMethod: z.enum(['upi', 'wise']),
   termsAgreed: z.literal(true, {
