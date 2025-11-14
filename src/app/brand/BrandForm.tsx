@@ -9,7 +9,7 @@ import { brandSchema } from '@/lib/schemas';
 import { submitBrandForm } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { Loader2, Info, ArrowLeft, ArrowRight, Check, Briefcase, DollarSign, FileText, Send, User, AlertTriangle } from 'lucide-react';
+import { Loader2, Info, ArrowLeft, ArrowRight, Check, Briefcase, DollarSign, FileText, Send, User, AlertTriangle, Sparkles } from 'lucide-react';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -24,6 +24,8 @@ import 'jspdf-autotable';
 import type { Dispatch, SetStateAction } from 'react';
 import { BrandTerms, BrandPrivacy } from '@/lib/legal';
 import LegalModal from './LegalModal';
+import { Separator } from '@/components/ui/separator';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from '@/components/ui/table';
 
 
 type BrandFormValues = z.infer<typeof brandSchema>;
@@ -105,7 +107,7 @@ export default function BrandForm({ setOpen }: BrandFormProps) {
 
   const prev = () => {
     if (currentStep > 0) {
-      setCurrentStep(step => step + 1);
+      setCurrentStep(step => step - 1);
     }
   };
 
@@ -475,25 +477,104 @@ const Step5 = () => {
     const values = getValues();
     const [isTermsOpen, setIsTermsOpen] = useState(false);
     const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+    const inquiryId = `YBT-${Date.now()}`;
+    const submissionDate = new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
 
     return (
         <div className="space-y-6">
-            <h3 className="text-lg font-medium">Review & Submit</h3>
-            <div className="border rounded-lg p-4 space-y-2 bg-muted/30">
-                <p><strong>Brand:</strong> {values.brandName}</p>
-                <p><strong>Contact:</strong> {values.contactPerson} ({values.workEmail})</p>
-                {values.productLink && <p><strong>Website:</strong> {values.productLink}</p>}
-                <p><strong>Budget:</strong> ${values.estimatedBudget}</p>
-                <p><strong>Video Type:</strong> {values.videoType}</p>
-                <p><strong>Product Type:</strong> {values.productType}</p>
-                {values.description && <p><strong>Description:</strong> {values.description}</p>}
-                <p><strong>Platforms:</strong> {values.platforms.join(', ')}</p>
+             <div className="border rounded-xl shadow-sm">
+                <div className="p-6">
+                    <header className="flex justify-between items-start mb-6">
+                        <div>
+                            <h2 className="text-2xl font-bold font-headline text-primary flex items-center gap-2">
+                                <Sparkles className="w-6 h-6 text-accent" />
+                                You B Tech
+                            </h2>
+                            <p className="text-muted-foreground">Collaboration Inquiry</p>
+                        </div>
+                        <div className="text-right">
+                            <p className="font-semibold text-lg">{inquiryId}</p>
+                            <p className="text-sm text-muted-foreground">Date: {submissionDate}</p>
+                        </div>
+                    </header>
+
+                    <div className="grid sm:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h3 className="text-sm font-semibold text-muted-foreground mb-2">BILL TO</h3>
+                            <div className="text-sm">
+                                <p className="font-bold">{values.brandName}</p>
+                                <p>{values.contactPerson}</p>
+                                <p>{values.workEmail}</p>
+                                <p>{values.country}</p>
+                            </div>
+                        </div>
+                         {values.productLink && (
+                            <div>
+                                <h3 className="text-sm font-semibold text-muted-foreground mb-2">BRAND/PRODUCT</h3>
+                                <a href={values.productLink} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline break-all">{values.productLink}</a>
+                            </div>
+                        )}
+                    </div>
+                
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Service Description</TableHead>
+                                <TableHead className="text-right">Details</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell>Video Type</TableCell>
+                                <TableCell className="text-right capitalize">{values.videoType}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>Product Type</TableCell>
+                                <TableCell className="text-right capitalize">{values.productType}</TableCell>
+                            </TableRow>
+                             <TableRow>
+                                <TableCell>Target Platforms</TableCell>
+                                <TableCell className="text-right capitalize">{values.platforms.join(', ')}</TableCell>
+                            </TableRow>
+                            {values.description && (
+                                <TableRow>
+                                    <TableCell>Campaign Description</TableCell>
+                                    <TableCell className="text-right text-xs max-w-[200px] truncate">{values.description}</TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+
+                    <Separator className="my-6" />
+
+                    <div className="flex justify-end">
+                        <div className="w-full max-w-xs space-y-2">
+                             <div className="flex justify-between font-semibold text-lg">
+                                <span>Estimated Budget</span>
+                                <span>${values.estimatedBudget.toLocaleString()}</span>
+                            </div>
+                             <div className="flex justify-between text-sm text-muted-foreground">
+                                <span>Payment Method</span>
+                                <span className="capitalize">{values.paymentMethod.replace('-', ' ')}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="bg-muted/50 p-4 text-xs text-center text-muted-foreground rounded-b-xl">
+                    This is a preliminary inquiry. A formal proposal and invoice will be sent upon approval.
+                </div>
             </div>
+
+
             <FormField
                 control={useFormContext().control}
                 name="termsAgreed"
                 render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow-sm">
                     <FormControl>
                         <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
