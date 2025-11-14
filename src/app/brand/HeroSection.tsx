@@ -10,7 +10,7 @@ const HeroSection = () => {
     };
 
     return (
-        <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden">
+        <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden bg-background">
             <DotGrid
                 dotSize={2}
                 gap={25}
