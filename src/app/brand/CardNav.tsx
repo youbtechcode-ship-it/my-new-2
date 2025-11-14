@@ -11,9 +11,9 @@ gsap.registerPlugin(useGSAP);
 
 const Card = ({ title, icon, link, href, external = false, className, children }) => {
     const handleLinkClick = (e) => {
-        if (!external && href.startsWith('/#')) {
+        if (!external && href.startsWith('/brand#')) {
             e.preventDefault();
-            const targetId = href.substring(2);
+            const targetId = href.split('#')[1];
             const targetElement = document.getElementById(targetId);
             if (targetElement) {
                 targetElement.scrollIntoView({ behavior: 'smooth' });
@@ -37,9 +37,9 @@ const Card = ({ title, icon, link, href, external = false, className, children }
 
 const CardLink = ({ text, href, external = false }) => {
     const handleLinkClick = (e) => {
-        if (!external && href.startsWith('/#')) {
+        if (!external && href.startsWith('/brand#')) {
             e.preventDefault();
-            const targetId = href.substring(2);
+            const targetId = href.split('#')[1];
             const targetElement = document.getElementById(targetId);
             if (targetElement) {
                 targetElement.scrollIntoView({ behavior: 'smooth' });
@@ -120,21 +120,21 @@ const CardNav = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div onClick={handleLinkClick}>
-                            <Card title="About Us" icon={<Book size={20} />} href="/#about" className="bg-[var(--card-about-bg)] text-white">
-                                <CardLink text="Who is Brajendra?" href="/#about" />
-                                <CardLink text="Audience & Reach" href="/#audience" />
+                            <Card title="About Us" icon={<Book size={20} />} href="/brand#about" className="bg-[var(--card-about-bg)] text-white">
+                                <CardLink text="Who is Brajendra?" href="/brand#about" />
+                                <CardLink text="Audience & Reach" href="/brand#audience" />
                             </Card>
                         </div>
                         <div onClick={handleLinkClick}>
-                            <Card title="Our Work" icon={<Youtube size={20} />} href="/#portfolio" className="bg-[var(--card-work-bg)] text-white">
-                                <CardLink text="Past Collaborations" href="/#portfolio" />
+                            <Card title="Our Work" icon={<Youtube size={20} />} href="/brand#portfolio" className="bg-[var(--card-work-bg)] text-white">
+                                <CardLink text="Past Collaborations" href="/brand#portfolio" />
                                 <CardLink text="YouTube Channel" href="https://youtube.com/@you_b_tech" external />
                             </Card>
                         </div>
                         <div onClick={handleLinkClick}>
-                            <Card title="Collaborate" icon={<Handshake size={20} />} href="/brand" className="bg-accent text-accent-foreground">
-                                <CardLink text="Start Your Inquiry" href="/brand" />
-                                <CardLink text="Our Process" href="/#process" />
+                            <Card title="Collaborate" icon={<Handshake size={20} />} href="/collaborate" className="bg-accent text-accent-foreground">
+                                <CardLink text="Start Your Inquiry" href="/collaborate" />
+                                <CardLink text="Our Process" href="/brand#process" />
                             </Card>
                         </div>
                     </div>

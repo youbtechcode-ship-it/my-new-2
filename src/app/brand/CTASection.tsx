@@ -11,9 +11,9 @@ const CTASection = () => {
                 <div className="container mx-auto text-center">
                     <h2 className="font-headline text-4xl font-bold mb-4">Ready to Collaborate?</h2>
                     <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                        Let&apos;s create something amazing together. Click the button below to start your inquiry.
+                        Let's create something amazing together. Click the button below to start your inquiry.
                     </p>
-                    <Link href="/brand" passHref>
+                    <Link href="/collaborate" passHref>
                         <button className="bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold text-lg px-8 py-4 rounded-full shadow-lg transition-transform duration-300 hover:scale-105">
                            Start Collaboration Now <ArrowRight className="inline-block ml-2" />
                         </button>
