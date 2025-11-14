@@ -33,6 +33,22 @@ const SocialStatCard = ({ icon, label, value, suffix, className, description, li
 
 
 const AudienceSection = () => {
+    
+    const countryData = [
+        { name: 'India', value: 60, color: 'hsl(205 90% 50%)' },
+        { name: 'United States', value: 19, color: 'hsl(205 85% 60%)' },
+        { name: 'Brazil', value: 5, color: 'hsl(205 80% 70%)' },
+        { name: 'United Kingdom', value: 4, color: 'hsl(205 75% 80%)' },
+        { name: 'Other', value: 12, color: 'hsl(205 70% 85%)' },
+    ];
+
+    const ageData = [
+        { name: '18-24', value: 42.2, color: 'hsl(205 90% 50%)' },
+        { name: '25-34', value: 33.0, color: 'hsl(205 85% 60%)' },
+        { name: '35-44', value: 15.8, color: 'hsl(205 80% 70%)' },
+        { name: '45+', value: 9.0, color: 'hsl(205 75% 80%)' },
+    ];
+
     return (
         <FadeInSection>
             <section id="audience" className="relative py-20 px-4 container mx-auto overflow-hidden">
@@ -45,7 +61,7 @@ const AudienceSection = () => {
                             value={60}
                             suffix=""
                             description="YouTube Subscribers"
-                            className="bg-red-600"
+                            className="bg-primary"
                             link="https://youtube.com/@you_b_tech" 
                         />
                         <SocialStatCard 
@@ -54,7 +70,7 @@ const AudienceSection = () => {
                             value={2.5}
                             suffix=""
                             description="Instagram Followers"
-                            className="bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400"
+                            className="bg-gradient-to-br from-blue-500 to-sky-400"
                             link="https://instagram.com/youbtech" 
                         />
                         <SocialStatCard 
@@ -63,7 +79,7 @@ const AudienceSection = () => {
                             value={8.9}
                             suffix=""
                             description="Telegram Members"
-                            className="bg-blue-500"
+                            className="bg-sky-600"
                             link="https://t.me/youbtech" 
                         />
                     </div>
@@ -71,22 +87,11 @@ const AudienceSection = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
                         <DemographicChart
                             title="Audience by Country"
-                            data={[
-                                { name: 'India', value: 60, color: 'hsl(var(--chart-1))' },
-                                { name: 'United States', value: 19, color: 'hsl(var(--chart-2))' },
-                                { name: 'Brazil', value: 5, color: 'hsl(var(--chart-3))' },
-                                { name: 'United Kingdom', value: 4, color: 'hsl(var(--chart-4))' },
-                                { name: 'Other', value: 12, color: 'hsl(var(--chart-5))' },
-                            ]}
+                            data={countryData}
                         />
                         <DemographicChart
                             title="Audience by Age"
-                            data={[
-                                { name: '18-24', value: 42.2, color: 'hsl(var(--chart-1))' },
-                                { name: '25-34', value: 33.0, color: 'hsl(var(--chart-2))' },
-                                { name: '35-44', value: 15.8, color: 'hsl(var(--chart-3))' },
-                                { name: '45+', value: 9.0, color: 'hsl(var(--chart-4))' },
-                            ]}
+                            data={ageData}
                         />
                     </div>
 
