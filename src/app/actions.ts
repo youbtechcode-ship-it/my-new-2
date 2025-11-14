@@ -3,7 +3,6 @@
 import { z } from 'zod';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { initializeFirebase } from '@/firebase';
-import { analyzeLeadQuality } from '@/ai/flows/analyze-lead-quality';
 import { subscriberSchema, freelancerSchema, brandSchema } from '@/lib/schemas';
 
 type FormState = {
@@ -35,15 +34,9 @@ export async function submitFreelancerForm(
     const { firestore } = initializeFirebase();
     const validatedData = freelancerSchema.parse(data);
 
-    const aiAnalysis = await analyzeLeadQuality({
-      leadData: JSON.stringify(validatedData),
-      leadType: 'freelancer',
-    });
-
     await addDoc(collection(firestore, 'freelancers'), {
       ...validatedData,
       submittedAt: serverTimestamp(),
-      aiAnalysis,
     });
     return {
       success: true,
@@ -62,15 +55,9 @@ export async function submitBrandForm(
     const { firestore } = initializeFirebase();
     const validatedData = brandSchema.parse(data);
 
-    const aiAnalysis = await analyzeLeadQuality({
-        leadData: JSON.stringify(validatedData),
-        leadType: 'brand',
-    });
-
     await addDoc(collection(firestore, 'brand_collaborations'), {
       ...validatedData,
       submittedAt: serverTimestamp(),
-      aiAnalysis,
     });
     return {
       success: true,
