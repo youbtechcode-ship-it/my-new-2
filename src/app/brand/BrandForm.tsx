@@ -228,22 +228,22 @@ const Step1 = () => (
   <div className="space-y-4">
     <FormField control={useFormContext().control} name="brandName" render={({ field }) => (
       <FormItem>
-        <FormLabel>Brand Name</FormLabel>
-        <FormControl><Input placeholder="Awesome Inc." {...field} /></FormControl>
+        <FormLabel>Brand / Company Name</FormLabel>
+        <FormControl><Input placeholder="e.g., Tech Innovations Inc." {...field} /></FormControl>
         <FormMessage />
       </FormItem>
     )} />
     <FormField control={useFormContext().control} name="contactPerson" render={({ field }) => (
       <FormItem>
-        <FormLabel>Your Name</FormLabel>
-        <FormControl><Input placeholder="Jane Smith" {...field} /></FormControl>
+        <FormLabel>Your Full Name</FormLabel>
+        <FormControl><Input placeholder="e.g., John Doe" {...field} /></FormControl>
         <FormMessage />
       </FormItem>
     )} />
     <FormField control={useFormContext().control} name="workEmail" render={({ field }) => (
       <FormItem>
-        <FormLabel>Work Email</FormLabel>
-        <FormControl><Input placeholder="jane.s@awesome.com" {...field} /></FormControl>
+        <FormLabel>Work Email Address</FormLabel>
+        <FormControl><Input placeholder="you@company.com" {...field} /></FormControl>
         <FormMessage />
       </FormItem>
     )} />
