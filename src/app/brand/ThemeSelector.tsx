@@ -1,12 +1,14 @@
 'use client';
-import { useTheme } from './ThemeContext';
+import { useTheme } from 'next-themes';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Sun, Moon, Palette, Check } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
+import { themes, type Theme } from '@/lib/themes';
 
 const ThemeSelector = () => {
-    const { theme: currentTheme, setTheme, mode, setMode, availableThemes } = useTheme();
+    const { theme: currentTheme, setTheme, resolvedTheme } = useTheme();
+    const mode = resolvedTheme;
 
     return (
         <Popover>
@@ -22,19 +24,19 @@ const ThemeSelector = () => {
                         <Switch
                             id="dark-mode-switch"
                             checked={mode === 'dark'}
-                            onCheckedChange={(checked) => setMode(checked ? 'dark' : 'light')}
+                            onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
                         />
                     </div>
                     <hr className="border-border" />
                     <div className="space-y-2">
                         <p className="text-sm font-medium">Color Palette</p>
                         <div className="grid grid-cols-2 gap-2">
-                            {availableThemes.map((theme) => (
+                            {themes.map((theme) => (
                                 <button
                                     key={theme.name}
                                     onClick={() => setTheme(theme.name)}
                                     className="p-2 rounded-md border-2 flex items-center justify-between"
-                                    style={{ borderColor: theme.name === currentTheme ? 'hsl(var(--primary))' : 'hsl(var(--border))' }}
+                                    style={{ borderColor: currentTheme === theme.name ? 'hsl(var(--primary))' : 'hsl(var(--border))' }}
                                 >
                                     <div className="flex items-center gap-2">
                                         <div className="flex -space-x-1">
@@ -48,7 +50,7 @@ const ThemeSelector = () => {
                                         </div>
                                         <span className="text-xs font-medium capitalize">{theme.name.replace(/([A-Z])/g, ' $1').trim()}</span>
                                     </div>
-                                    {theme.name === currentTheme && <Check size={16} className="text-primary" />}
+                                    {currentTheme === theme.name && <Check size={16} className="text-primary" />}
                                 </button>
                             ))}
                         </div>

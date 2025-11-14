@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { ThemeProvider } from './ThemeContext';
 import CardNav from './CardNav';
 import HeroSection from './HeroSection';
 import AboutSection from './AboutSection';
@@ -11,11 +10,9 @@ import WhyUsSection from './WhyUsSection';
 import ProcessSection from './ProcessSection';
 import CTASection from './CTASection';
 import Footer from './Footer';
-import { Toaster } from '@/components/ui/toaster';
 
 export default function BrandPage() {
   return (
-    <ThemeProvider>
       <div className="bg-background text-foreground font-body">
         <CardNav />
         <main>
@@ -28,8 +25,6 @@ export default function BrandPage() {
           <CTASection />
         </main>
         <Footer />
-        <Toaster />
       </div>
-    </ThemeProvider>
   );
 }
