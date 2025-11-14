@@ -43,7 +43,7 @@ const AboutSection = () => {
           <div className="lg:w-1/2 mb-8 lg:mb-0">
             <div className={isDesktop ? 'lg:sticky top-28' : ''}>
               <Image
-                src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhoXU2S_A4w-vdhJPMi22QCi0P_iL9Gg2uM5KzCgWq-I3hss_8pBprN9mKBYUuMZo9H3d3QWkPZFgB7Ld-dKfw7xTf_m-m9yG8Hh9ZlcqXu_tL1uG0Yx94g2m0sP0Z3n0c5W1s9J2n1/s1600/brajendra-choudhary.jpg"
+                src="https://blogger.googleusercontent.com/img/a/AVvXsEhETvY8ekLC3NuIUlyQPB2xt9rnIsfO1dIkkG1FnVXka2Q9NC2wUP1-MyruvD37IS_ay97hYMElrBKJk5_4kBg4qrYHs4BGD4BbIaBrjbA9-sDLzAnZn2f7foDeMNA-1g3MojyMuKAk9md5evmeUv3FNBmYlJAEGRrfaiu3VKMWpb8XZ8DOV9O89tSC822e"
                 alt="Brajendra, creator of You B Tech"
                 width={500}
                 height={500}
