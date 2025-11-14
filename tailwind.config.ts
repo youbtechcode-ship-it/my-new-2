@@ -18,7 +18,7 @@ export default {
     extend: {
       fontFamily: {
         body: ['"Poppins"', 'sans-serif'],
-        headline: ['"Calistoga"', 'serif'],
+        headline: ['"Poppins"', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background-hsl))',
