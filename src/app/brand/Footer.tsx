@@ -5,10 +5,11 @@ import Link from 'next/link';
 import { Youtube, Instagram, Send, Github, Mail } from 'lucide-react';
 import LegalModal from './LegalModal';
 import SocialBrowserModal from './SocialBrowserModal';
+import { BrandTerms, BrandPrivacy } from '@/lib/legal';
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
-    const [legalContent, setLegalContent] = useState({ title: '', content: '' });
+    const [legalContent, setLegalContent] = useState({ title: '', content: <></> });
     const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
 
     const [socialUrl, setSocialUrl] = useState('');
@@ -17,13 +18,13 @@ const Footer = () => {
     const handleLegalClick = (type: 'terms' | 'privacy') => {
         if (type === 'terms') {
             setLegalContent({
-                title: 'Terms of Service',
-                content: 'This is a placeholder for your Terms of Service. Please replace this with your actual terms.'
+                title: 'You B Tech – Terms of Service',
+                content: <BrandTerms />
             });
         } else {
             setLegalContent({
-                title: 'Privacy Policy',
-                content: 'This is a placeholder for your Privacy Policy. Please replace this with your actual policy.'
+                title: 'You B Tech – Privacy Policy',
+                content: <BrandPrivacy />
             });
         }
         setIsLegalModalOpen(true);

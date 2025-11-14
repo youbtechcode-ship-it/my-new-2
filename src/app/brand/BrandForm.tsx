@@ -22,6 +22,9 @@ import ReactConfetti from 'react-confetti';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import type { Dispatch, SetStateAction } from 'react';
+import { BrandTerms, BrandPrivacy } from '@/lib/legal';
+import LegalModal from './LegalModal';
+
 
 type BrandFormValues = z.infer<typeof brandSchema>;
 
@@ -438,29 +441,9 @@ const Step5 = () => {
                     <div className="space-y-1 leading-none">
                         <FormLabel>
                         I agree to the 
-                        <Dialog open={isTermsOpen} onOpenChange={setIsTermsOpen}>
-                            <DialogTrigger asChild>
-                                <Button variant="link" className="p-0 h-auto ml-1" type="button">Terms of Service</Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogHeader>
-                                  <DialogTitle>Terms of Service</DialogTitle>
-                                </DialogHeader>
-                                <p>This is a placeholder for your Terms of Service. Please replace this with your actual terms.</p>
-                            </DialogContent>
-                        </Dialog>
+                        <Button variant="link" className="p-0 h-auto ml-1" type="button" onClick={() => setIsTermsOpen(true)}>Terms of Service</Button>
                         and 
-                        <Dialog open={isPrivacyOpen} onOpenChange={setIsPrivacyOpen}>
-                            <DialogTrigger asChild>
-                                <Button variant="link" className="p-0 h-auto ml-1" type="button">Privacy Policy</Button>
-                            </DialogTrigger>
-                             <DialogContent>
-                                <DialogHeader>
-                                  <DialogTitle>Privacy Policy</DialogTitle>
-                                </DialogHeader>
-                                <p>This is a placeholder for your Privacy Policy. Please replace this with your actual policy.</p>
-                            </DialogContent>
-                        </Dialog>
+                        <Button variant="link" className="p-0 h-auto ml-1" type="button" onClick={() => setIsPrivacyOpen(true)}>Privacy Policy</Button>
                         .
                         </FormLabel>
                         <FormMessage />
@@ -468,6 +451,8 @@ const Step5 = () => {
                     </FormItem>
                 )}
             />
+            <LegalModal isOpen={isTermsOpen} setIsOpen={setIsTermsOpen} title="Terms of Service" content={<BrandTerms />} />
+            <LegalModal isOpen={isPrivacyOpen} setIsOpen={setIsPrivacyOpen} title="Privacy Policy" content={<BrandPrivacy />} />
         </div>
     );
 };

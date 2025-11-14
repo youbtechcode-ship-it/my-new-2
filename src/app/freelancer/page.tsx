@@ -1,8 +1,13 @@
+'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import FreelancerForm from './FreelancerForm';
 import { Banknote, Briefcase, Component, FileText, ImageIcon, LayoutGrid, Paintbrush, PenTool, Sparkles, TrendingUp, UserCheck } from 'lucide-react';
 import Header from '../brand/Header';
 import Footer from '../brand/Footer';
+import { useState } from 'react';
+import LegalModal from '../brand/LegalModal';
+import { FreelancerTerms, FreelancerPrivacy } from '@/lib/legal';
+
 
 const benefits = [
     { icon: <Banknote className="w-8 h-8 text-accent" />, title: 'Instant Payments', description: 'Get paid quickly after your work is approved.' },
@@ -21,6 +26,24 @@ const workCategories = [
 ];
 
 export default function FreelancerPage() {
+  const [legalContent, setLegalContent] = useState({ title: '', content: <></> });
+  const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
+
+  const handleLegalClick = (type: 'terms' | 'privacy') => {
+      if (type === 'terms') {
+          setLegalContent({
+              title: 'Freelancer – Terms of Service',
+              content: <FreelancerTerms />
+          });
+      } else {
+          setLegalContent({
+              title: 'Freelancer – Privacy Policy',
+              content: <FreelancerPrivacy />
+          });
+      }
+      setIsLegalModalOpen(true);
+  };
+  
   return (
     <div className="flex flex-col min-h-screen">
     <Header />
@@ -72,7 +95,15 @@ export default function FreelancerPage() {
         </Card>
       </section>
     </main>
+    <div className="container mx-auto px-4">
+        <div className="text-center text-sm text-muted-foreground my-8">
+            <button onClick={() => handleLegalClick('terms')} className="hover:text-accent transition-colors">Terms of Service</button>
+            <span className="mx-2">|</span>
+            <button onClick={() => handleLegalClick('privacy')} className="hover:text-accent transition-colors">Privacy Policy</button>
+        </div>
+    </div>
     <Footer />
+    <LegalModal isOpen={isLegalModalOpen} setIsOpen={setIsLegalModalOpen} title={legalContent.title} content={legalContent.content} />
     </div>
   );
 }

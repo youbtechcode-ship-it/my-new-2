@@ -1,8 +1,14 @@
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, FastForward, Lock, MessageCircle, ShieldOff } from 'lucide-react';
 import SubscriberForm from './SubscriberForm';
 import Header from '../brand/Header';
 import Footer from '../brand/Footer';
+import { useState } from 'react';
+import LegalModal from '../brand/LegalModal';
+import { SubscriberTerms, SubscriberPrivacy } from '@/lib/legal';
+
 
 const messageTypes = [
   'General message',
@@ -36,6 +42,24 @@ const valuePoints = [
 ];
 
 export default function SubscriberPage() {
+  const [legalContent, setLegalContent] = useState({ title: '', content: <></> });
+  const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
+
+  const handleLegalClick = (type: 'terms' | 'privacy') => {
+      if (type === 'terms') {
+          setLegalContent({
+              title: 'Subscriber – Terms of Service',
+              content: <SubscriberTerms />
+          });
+      } else {
+          setLegalContent({
+              title: 'Subscriber – Privacy Policy',
+              content: <SubscriberPrivacy />
+          });
+      }
+      setIsLegalModalOpen(true);
+  };
+  
   return (
     <div className="flex flex-col min-h-screen">
     <Header />
@@ -87,7 +111,15 @@ export default function SubscriberPage() {
         </Card>
       </section>
     </main>
+    <div className="container mx-auto px-4">
+        <div className="text-center text-sm text-muted-foreground my-8">
+            <button onClick={() => handleLegalClick('terms')} className="hover:text-accent transition-colors">Terms of Service</button>
+            <span className="mx-2">|</span>
+            <button onClick={() => handleLegalClick('privacy')} className="hover:text-accent transition-colors">Privacy Policy</button>
+        </div>
+    </div>
     <Footer />
+     <LegalModal isOpen={isLegalModalOpen} setIsOpen={setIsLegalModalOpen} title={legalContent.title} content={legalContent.content} />
     </div>
   );
 }
