@@ -1,8 +1,20 @@
 'use client';
 
 import Link from 'next/link';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Menu } from 'lucide-react';
 import ThemeSelector from './ThemeSelector';
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import { Button } from '@/components/ui/button';
+
+const navLinks = [
+  { href: '/subscriber', label: 'Connect' },
+  { href: '/freelancer', label: 'Work' },
+  { href: '/brand', label: 'Brands' },
+];
 
 const Header = () => {
   return (
@@ -13,19 +25,43 @@ const Header = () => {
             <Sparkles className="w-5 h-5 text-accent" />
             <span className="font-bold font-headline text-md hidden sm:inline">YBT</span>
           </Link>
-          <nav className="flex items-center gap-1 text-sm font-medium text-muted-foreground">
-            <Link href="/subscriber" className="px-3 py-1.5 hover:text-foreground transition-colors rounded-full hidden sm:inline">
-              Connect
-            </Link>
-            <Link href="/freelancer" className="px-3 py-1.5 hover:text-foreground transition-colors rounded-full hidden sm:inline">
-              Work
-            </Link>
-            <Link href="/brand" className="px-3 py-1.5 hover:text-foreground transition-colors rounded-full hidden sm:inline">
-              Brands
-            </Link>
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden sm:flex items-center gap-1 text-sm font-medium text-muted-foreground">
+            {navLinks.map((link) => (
+               <Link key={link.href} href={link.href} className="px-3 py-1.5 hover:text-foreground transition-colors rounded-full">
+                {link.label}
+              </Link>
+            ))}
           </nav>
-          <div className="pr-1">
-             <ThemeSelector />
+
+          <div className="flex items-center gap-1">
+            <div className="pr-1">
+               <ThemeSelector />
+            </div>
+
+            {/* Mobile Navigation */}
+            <div className="sm:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className="rounded-full w-8 h-8">
+                    <Menu size={18} />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right">
+                  <div className="flex flex-col items-center justify-center h-full">
+                  <nav className="flex flex-col items-center gap-4 text-lg font-medium text-muted-foreground">
+                     <Link href="/" className="px-3 py-1.5 hover:text-foreground transition-colors rounded-full">Home</Link>
+                     {navLinks.map((link) => (
+                       <Link key={link.href} href={link.href} className="px-3 py-1.5 hover:text-foreground transition-colors rounded-full">
+                        {link.label}
+                      </Link>
+                    ))}
+                  </nav>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
       </div>
