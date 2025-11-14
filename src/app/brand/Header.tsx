@@ -22,8 +22,7 @@ const Header = () => {
       <div className="w-full max-w-2xl">
         <div className="bg-card/50 backdrop-blur-lg border border-border rounded-full shadow-lg p-2 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 pl-4 pr-2">
-            <Sparkles className="w-5 h-5 text-accent" />
-            <span className="font-bold font-headline text-md hidden sm:inline">YBT</span>
+            <span className="font-bold font-headline text-md">YBT</span>
           </Link>
           
           {/* Desktop Navigation */}
