@@ -1,3 +1,4 @@
+
 'use server';
 
 import { z } from 'zod';
@@ -11,6 +12,44 @@ type FormState = {
   message: string;
 };
 
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: Number(process.env.SMTP_PORT) === 465,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
+
+// Subscriber Email to Admin
+async function sendSubscriberEmailToAdmin(data: z.infer<typeof subscriberSchema>) {
+  const { name, whatsappNumber, message } = data;
+
+  const emailHtml = `
+    <h1>New Subscriber Message</h1>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>WhatsApp Number:</strong> ${whatsappNumber}</p>
+    <p><strong>Message:</strong></p>
+    <p>${message}</p>
+  `;
+
+  const mailOptions = {
+    from: `"YBT Connect" <${process.env.SMTP_SENDER}>`,
+    to: process.env.EMAIL_RECIPIENT,
+    subject: `New Message from Subscriber: ${name}`,
+    html: emailHtml,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('Subscriber email to admin sent successfully');
+  } catch (error) {
+    console.error('Error sending subscriber email to admin:', error);
+    // Non-critical, so we don't throw
+  }
+}
+
 export async function submitSubscriberForm(
   data: z.infer<typeof subscriberSchema>
 ): Promise<FormState> {
@@ -21,12 +60,84 @@ export async function submitSubscriberForm(
       ...validatedData,
       submittedAt: serverTimestamp(),
     });
+    
+    // Send email notification to admin
+    await sendSubscriberEmailToAdmin(validatedData);
+    
     return { success: true, message: 'Thank you! Your message has been delivered.' };
   } catch (error) {
     console.error('Error submitting subscriber form:', error);
     return { success: false, message: 'An unexpected error occurred. Please try again.' };
   }
 }
+
+// Freelancer Emails
+async function sendFreelancerEmailToAdmin(data: z.infer<typeof freelancerSchema>) {
+    const { fullName, email, mobileNumber, portfolioLink, skills, experience, description } = data;
+
+    const emailHtml = `
+        <h1>New Freelancer Application</h1>
+        <p><strong>Name:</strong> ${fullName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Mobile:</strong> ${mobileNumber}</p>
+        <p><strong>Portfolio:</strong> <a href="${portfolioLink}">${portfolioLink}</a></p>
+        <hr>
+        <h2>Application Details</h2>
+        <p><strong>Skills:</strong> ${skills.join(', ')}</p>
+        <p><strong>Experience:</strong> ${experience}</p>
+        <p><strong>Description:</strong></p>
+        <p>${description}</p>
+    `;
+
+    const mailOptions = {
+        from: `"YBT Connect" <${process.env.SMTP_SENDER}>`,
+        to: process.env.EMAIL_RECIPIENT,
+        subject: `New Freelancer Application from ${fullName}`,
+        html: emailHtml,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Freelancer application email to admin sent successfully');
+    } catch (error) {
+        console.error('Error sending freelancer email to admin:', error);
+        throw error;
+    }
+}
+
+async function sendConfirmationToFreelancer(data: z.infer<typeof freelancerSchema>) {
+    const { fullName, email } = data;
+
+    const confirmationHtml = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+            <h2>Your Application to Work with You B Tech has been Received!</h2>
+            <p>Hello ${fullName},</p>
+            <p>Thank you for applying to join our network of talented freelancers. We have successfully received your application.</p>
+            <p>Our team will review your portfolio and experience. If your skills match our current needs, we will contact you within <strong>24-72 hours</strong> regarding next steps.</p>
+            <p>We appreciate your interest in collaborating with us!</p>
+            <br>
+            <p>Best regards,</p>
+            <p><strong>Brajendra</strong></p>
+            <p>Creator, You B Tech</p>
+        </div>
+    `;
+
+    const mailOptions = {
+        from: `"You B Tech" <${process.env.SMTP_SENDER}>`,
+        to: email,
+        subject: 'We Have Received Your Freelancer Application',
+        html: confirmationHtml,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Confirmation email sent to freelancer successfully');
+    } catch (error) {
+        console.error('Error sending confirmation email to freelancer:', error);
+        // Do not throw, as admin notification is more critical
+    }
+}
+
 
 export async function submitFreelancerForm(
   data: z.infer<typeof freelancerSchema>
@@ -39,6 +150,13 @@ export async function submitFreelancerForm(
       ...validatedData,
       submittedAt: serverTimestamp(),
     });
+
+    // Send emails
+    await Promise.all([
+        sendFreelancerEmailToAdmin(validatedData),
+        sendConfirmationToFreelancer(validatedData)
+    ]);
+
     return {
       success: true,
       message: 'Your application is received. You may get work within 24–72 hours if shortlisted.',
@@ -49,16 +167,8 @@ export async function submitFreelancerForm(
   }
 }
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: Number(process.env.SMTP_PORT) === 465,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
 
+// Brand Emails
 async function sendCollaborationEmailToAdmin(data: z.infer<typeof brandSchema>) {
   const { 
     brandName, contactPerson, workEmail, productLink, videoType, productType, 
