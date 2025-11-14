@@ -33,7 +33,9 @@ export const brandSchema = z.object({
   keywords: z.string().optional(),
   estimatedBudget: z.number().min(300, 'Budget must be at least $300 USD.'),
   country: z.string().min(1, 'Please select your country.'),
-  paymentMethod: z.enum(['upi', 'wise', 'paypal', 'debit-card', 'credit-card', 'bank-account']),
+  paymentMethod: z.enum(['upi', 'wise', 'paypal', 'debit-card', 'credit-card', 'bank-account'], {
+    errorMap: () => ({ message: "Please select a payment method." }),
+  }),
   termsAgreed: z.literal(true, {
     errorMap: () => ({ message: 'You must agree to the terms and conditions.' }),
   }),

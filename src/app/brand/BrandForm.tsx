@@ -9,7 +9,7 @@ import { brandSchema } from '@/lib/schemas';
 import { submitBrandForm } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { Loader2, Info, ArrowLeft, ArrowRight, Check, Briefcase, DollarSign, FileText, Send, User } from 'lucide-react';
+import { Loader2, Info, ArrowLeft, ArrowRight, Check, Briefcase, DollarSign, FileText, Send, User, AlertTriangle } from 'lucide-react';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -105,7 +105,7 @@ export default function BrandForm({ setOpen }: BrandFormProps) {
 
   const prev = () => {
     if (currentStep > 0) {
-      setCurrentStep(step => step - 1);
+      setCurrentStep(step => step + 1);
     }
   };
 
@@ -372,92 +372,103 @@ const Step3 = () => (
     </div>
 );
 
-const Step4 = ({ budgetTier, budgetProgress }: { budgetTier: string; budgetProgress: number }) => (
-  <div className="space-y-6">
-    <FormField control={useFormContext().control} name="estimatedBudget" render={({ field }) => (
-      <FormItem>
-        <FormLabel className="flex items-center">
-          Estimated Budget (USD)
-          <Dialog>
-              <DialogTrigger asChild>
-                  <Button variant="ghost" size="icon" className="w-5 h-5 ml-1">
-                      <Info className="w-4 h-4 text-muted-foreground" />
-                  </Button>
-              </DialogTrigger>
-              <DialogContent>
-                  <DialogHeader>
-                      <DialogTitle>Budget Level Guide</DialogTitle>
-                  </DialogHeader>
-                  <div className="prose prose-sm dark:prose-invert">
-                        <p>This guide helps you understand the collaboration tiers. All budgets are welcome, but a higher budget generally allows for more comprehensive and impactful campaigns.</p>
-                        <dl>
-                            <dt className='font-bold'>$300–$500: ⚠️ Starter Collaboration (Basic Budget)</dt>
-                            <dt className='font-bold mt-2'>$500–$800: 👍 Standard Collaboration (Good Level)</dt>
-                            <dt className='font-bold mt-2'>$800–$1000: 💼 Premium Collaboration (Great Value)</dt>
-                            <dt className='font-bold mt-2'>$1000+: 💎 Elite Collaboration (High Performance Partnership)</dt>
-                        </dl>
-                  </div>
-              </DialogContent>
-          </Dialog>
-        </FormLabel>
-        <FormControl>
-          <Input 
-            type="number" 
-            placeholder="e.g., 500" 
-            {...field}
-            onChange={e => field.onChange(parseInt(e.target.value, 10) || 0)}
-          />
-        </FormControl>
-        <FormMessage />
-        <div className="mt-2">
-          <Progress value={budgetProgress} className="w-full" />
-          <p className="text-sm font-medium text-center mt-2">{budgetTier}</p>
-        </div>
-      </FormItem>
-    )} />
-    <FormField control={useFormContext().control} name="country" render={({ field }) => (
-      <FormItem>
-        <FormLabel>Country</FormLabel>
-        <Select onValueChange={field.onChange} defaultValue={field.value}>
-          <FormControl>
-            <SelectTrigger>
-              <SelectValue placeholder="Select your country" />
-            </SelectTrigger>
-          </FormControl>
-          <SelectContent>
-            {countries.map(country => (
-              <SelectItem key={country.code} value={country.name}>
-                {country.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <FormMessage />
-      </FormItem>
-    )} />
-    <FormField control={useFormContext().control} name="paymentMethod" render={({ field }) => (
-        <FormItem>
-            <FormLabel>Preferred Payment Method</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+const Step4 = ({ budgetTier, budgetProgress }: { budgetTier: string; budgetProgress: number }) => {
+    const { watch } = useFormContext();
+    const paymentMethod = watch('paymentMethod');
+
+    return (
+        <div className="space-y-6">
+            <FormField control={useFormContext().control} name="estimatedBudget" render={({ field }) => (
+            <FormItem>
+                <FormLabel className="flex items-center">
+                Estimated Budget (USD)
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <Button variant="ghost" size="icon" className="w-5 h-5 ml-1">
+                            <Info className="w-4 h-4 text-muted-foreground" />
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Budget Level Guide</DialogTitle>
+                        </DialogHeader>
+                        <div className="prose prose-sm dark:prose-invert">
+                                <p>This guide helps you understand the collaboration tiers. All budgets are welcome, but a higher budget generally allows for more comprehensive and impactful campaigns.</p>
+                                <dl>
+                                    <dt className='font-bold'>$300–$500: ⚠️ Starter Collaboration (Basic Budget)</dt>
+                                    <dt className='font-bold mt-2'>$500–$800: 👍 Standard Collaboration (Good Level)</dt>
+                                    <dt className='font-bold mt-2'>$800–$1000: 💼 Premium Collaboration (Great Value)</dt>
+                                    <dt className='font-bold mt-2'>$1000+: 💎 Elite Collaboration (High Performance Partnership)</dt>
+                                </dl>
+                        </div>
+                    </DialogContent>
+                </Dialog>
+                </FormLabel>
                 <FormControl>
-                <SelectTrigger>
-                    <SelectValue placeholder="Select payment method" />
-                </SelectTrigger>
+                <Input 
+                    type="number" 
+                    placeholder="e.g., 500" 
+                    {...field}
+                    onChange={e => field.onChange(parseInt(e.target.value, 10) || 0)}
+                />
+                </FormControl>
+                <FormMessage />
+                <div className="mt-2">
+                <Progress value={budgetProgress} className="w-full" />
+                <p className="text-sm font-medium text-center mt-2">{budgetTier}</p>
+                </div>
+            </FormItem>
+            )} />
+            <FormField control={useFormContext().control} name="country" render={({ field }) => (
+            <FormItem>
+                <FormLabel>Country</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                    <SelectTrigger>
+                    <SelectValue placeholder="Select your country" />
+                    </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                    <SelectItem value="upi">UPI (for India)</SelectItem>
-                    <SelectItem value="wise">Wise (International)</SelectItem>
-                    <SelectItem value="paypal">PayPal</SelectItem>
-                    <SelectItem value="debit-card">Debit Card (via PayPal)</SelectItem>
-                    <SelectItem value="credit-card">Credit Card (via PayPal)</SelectItem>
-                    <SelectItem value="bank-account">Bank Account (via PayPal)</SelectItem>
+                    {countries.map(country => (
+                    <SelectItem key={country.code} value={country.name}>
+                        {country.name}
+                    </SelectItem>
+                    ))}
                 </SelectContent>
-            </Select>
-            <FormMessage />
-        </FormItem>
-    )} />
-  </div>
-);
+                </Select>
+                <FormMessage />
+            </FormItem>
+            )} />
+            <FormField control={useFormContext().control} name="paymentMethod" render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Preferred Payment Method</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select payment method" />
+                        </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            <SelectItem value="upi">UPI (for India, no taxes)</SelectItem>
+                            <SelectItem value="wise">Wise (International)</SelectItem>
+                            <SelectItem value="paypal">PayPal</SelectItem>
+                            <SelectItem value="debit-card">Debit Card (via PayPal)</SelectItem>
+                            <SelectItem value="credit-card">Credit Card (via PayPal)</SelectItem>
+                            <SelectItem value="bank-account">Bank Account (via PayPal)</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                    {paymentMethod && paymentMethod !== 'upi' && (
+                         <div className="mt-2 flex items-center text-sm text-destructive">
+                            <AlertTriangle className="w-4 h-4 mr-2" />
+                            <span>Taxes and processing fees will be borne by the brand.</span>
+                        </div>
+                    )}
+                </FormItem>
+            )} />
+        </div>
+    );
+};
 
 const Step5 = () => {
     const { getValues } = useFormContext<BrandFormValues>();
