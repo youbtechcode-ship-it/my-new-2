@@ -78,6 +78,9 @@ export async function submitBrandForm(
     };
   } catch (error) {
     console.error('Error submitting brand form:', error);
-    return { success: false, message: 'An unexpected error occurred. Please try again.' };
+    const errorMessage = error instanceof z.ZodError 
+      ? error.issues.map(issue => `${issue.path.join('.')}: ${issue.message}`).join(', ')
+      : 'An unexpected error occurred. Please try again.';
+    return { success: false, message: errorMessage };
   }
 }

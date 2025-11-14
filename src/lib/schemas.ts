@@ -18,11 +18,18 @@ export const freelancerSchema = z.object({
 
 export const brandSchema = z.object({
   brandName: z.string().min(2, 'Brand name must be at least 2 characters.'),
-  contactPerson: z.string().min(2, 'Contact person must be at least 2 characters.'),
+  contactPerson: z.string().min(2, 'Your name must be at least 2 characters.'),
   workEmail: z.string().email('Please enter a valid work email.'),
-  mobileNumber: z.string().min(10, 'Please enter a valid mobile number.'),
-  campaignDescription: z.string().min(20, 'Description must be at least 20 characters.'),
-  productLink: z.string().url('Please enter a valid product link.'),
-  estimatedBudget: z.string().min(1, 'Please provide an estimated budget.'),
-  deadline: z.string().min(1, 'Please provide a deadline.'),
+  videoType: z.enum(['dedicated', 'integrated'], {
+    errorMap: () => ({ message: "Please select a video type." }),
+  }),
+  platforms: z.array(z.string()).nonempty({ message: 'Please select at least one platform.' }),
+  assetsLink: z.string().url().optional().or(z.literal('')),
+  keywords: z.string().optional(),
+  estimatedBudget: z.number().min(200, 'Budget must be at least $200 USD.'),
+  country: z.string().min(1, 'Please select your country.'),
+  paymentMethod: z.enum(['upi', 'wise']),
+  termsAgreed: z.literal(true, {
+    errorMap: () => ({ message: 'You must agree to the terms and conditions.' }),
+  }),
 });
