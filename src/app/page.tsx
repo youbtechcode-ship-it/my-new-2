@@ -36,7 +36,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-grow">
-      <section className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center text-center px-4 overflow-hidden bg-background">
+      <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden bg-background">
           <DotGrid
               dotSize={2}
               gap={25}

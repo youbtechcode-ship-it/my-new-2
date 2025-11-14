@@ -2,7 +2,7 @@
 import { useTheme } from 'next-themes';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { Sun, Moon, Palette, Check } from 'lucide-react';
+import { Moon, Palette, Check, Sun } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { themes, type Theme } from '@/lib/themes';
 
@@ -13,14 +13,17 @@ const ThemeSelector = () => {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="ghost" size="icon" className="bg-card p-2 rounded-full shadow-md border border-border">
-                    <Palette size={20} />
+                <Button variant="ghost" size="icon" className="rounded-full w-8 h-8">
+                    <Palette size={18} />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-64 p-4" align="end">
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                        <label htmlFor="dark-mode-switch" className="text-sm font-medium">Dark Mode</label>
+                        <label htmlFor="dark-mode-switch" className="text-sm font-medium flex items-center gap-2">
+                            {mode === 'dark' ? <Moon size={16} /> : <Sun size={16} />}
+                            <span>Dark Mode</span>
+                        </label>
                         <Switch
                             id="dark-mode-switch"
                             checked={mode === 'dark'}

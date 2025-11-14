@@ -22,9 +22,9 @@ const workCategories = [
 
 export default function FreelancerPage() {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
     <Header />
-    <main className="container mx-auto px-4 py-24 md:py-32">
+    <main className="flex-grow container mx-auto px-4 py-24 md:py-32">
       <section className="text-center">
         <h1 className="text-4xl md:text-6xl font-headline font-bold">Work With YBT</h1>
         <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -73,6 +73,6 @@ export default function FreelancerPage() {
       </section>
     </main>
     <Footer />
-    </>
+    </div>
   );
 }
