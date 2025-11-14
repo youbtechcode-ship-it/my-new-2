@@ -34,7 +34,7 @@ interface BrandFormProps {
 
 const steps = [
   { id: 'Step 1', name: 'Brand Details', fields: ['brandName', 'contactPerson', 'workEmail', 'productLink'], icon: User },
-  { id: 'Step 2', name: 'Overview', fields: ['videoType', 'platforms'], icon: Briefcase },
+  { id: 'Step 2', name: 'Overview', fields: ['videoType', 'platforms', 'description'], icon: Briefcase },
   { id: 'Step 3', name: 'Assets', fields: ['assetsLink', 'keywords'], icon: FileText },
   { id: 'Step 4', name: 'Budget', fields: ['estimatedBudget', 'country', 'paymentMethod'], icon: DollarSign },
   { id: 'Step 5', name: 'Submit', fields: ['termsAgreed'], icon: Send },
@@ -55,6 +55,7 @@ export default function BrandForm({ setOpen }: BrandFormProps) {
       workEmail: '',
       productLink: '',
       videoType: 'dedicated',
+      description: '',
       platforms: [],
       assetsLink: '',
       keywords: '',
@@ -131,6 +132,7 @@ export default function BrandForm({ setOpen }: BrandFormProps) {
         ['Work Email', data.workEmail],
         ['Product Link', data.productLink || 'N/A'],
         ['Video Type', data.videoType],
+        ['Description', data.description || 'N/A'],
         ['Platforms', data.platforms.join(', ')],
         ['Budget (USD)', `$${data.estimatedBudget}`],
         ['Country', data.country],
@@ -273,10 +275,18 @@ const Step2 = () => (
           <SelectContent>
             <SelectItem value="dedicated">Dedicated Video</SelectItem>
             <SelectItem value="integrated">Integrated Segment</SelectItem>
+            <SelectItem value="shorts">Shorts</SelectItem>
           </SelectContent>
         </Select>
         <FormMessage />
       </FormItem>
+    )} />
+     <FormField control={useFormContext().control} name="description" render={({ field }) => (
+        <FormItem>
+            <FormLabel>Description/Requirement (Optional)</FormLabel>
+            <FormControl><Textarea placeholder="Describe the product, key features to highlight, or any specific requirements for the video." {...field} /></FormControl>
+            <FormMessage />
+        </FormItem>
     )} />
     <FormField
       control={useFormContext().control}
@@ -438,6 +448,7 @@ const Step5 = () => {
                 {values.productLink && <p><strong>Website:</strong> {values.productLink}</p>}
                 <p><strong>Budget:</strong> ${values.estimatedBudget}</p>
                 <p><strong>Video Type:</strong> {values.videoType}</p>
+                {values.description && <p><strong>Description:</strong> {values.description}</p>}
                 <p><strong>Platforms:</strong> {values.platforms.join(', ')}</p>
             </div>
             <FormField
