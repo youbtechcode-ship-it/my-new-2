@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -9,7 +9,7 @@ import { brandSchema } from '@/lib/schemas';
 import { submitBrandForm } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { Loader2, Info, ArrowLeft, ArrowRight, Check, Briefcase, DollarSign, FileText, Send, User, AlertTriangle, Sparkles } from 'lucide-react';
+import { Loader2, Info, ArrowLeft, ArrowRight, Check, Briefcase, DollarSign, FileText, Send, User, AlertTriangle, Sparkles, Home } from 'lucide-react';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -26,7 +26,8 @@ import { BrandTerms, BrandPrivacy } from '@/lib/legal';
 import LegalModal from './LegalModal';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from '@/components/ui/table';
-
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { useRouter } from 'next/navigation';
 
 type BrandFormValues = z.infer<typeof brandSchema>;
 
@@ -42,11 +43,63 @@ const steps = [
   { id: 'Step 5', name: 'Submit', fields: ['termsAgreed'], icon: Send },
 ];
 
+const SubmissionSuccessDialog = ({ open, onRedirect }: { open: boolean, onRedirect: () => void }) => {
+    const [progress, setProgress] = useState(10);
+    const [countdown, setCountdown] = useState(10);
+
+    useEffect(() => {
+        if (open) {
+            setProgress(10);
+            setCountdown(10);
+            
+            const progressTimer = setInterval(() => {
+                setProgress(prev => (prev < 100 ? prev + 10 : 100));
+            }, 100);
+
+            const countdownTimer = setInterval(() => {
+                setCountdown(prev => prev - 1);
+            }, 1000);
+
+            const redirectTimer = setTimeout(onRedirect, 10000);
+
+            return () => {
+                clearInterval(progressTimer);
+                clearInterval(countdownTimer);
+                clearTimeout(redirectTimer);
+            };
+        }
+    }, [open, onRedirect]);
+
+    return (
+        <Dialog open={open}>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle className="text-2xl text-center font-headline">Congratulations!</DialogTitle>
+                </DialogHeader>
+                <div className="text-center space-y-4">
+                    <p className="text-muted-foreground">Your collaboration inquiry has been successfully submitted.</p>
+                    <div className="w-full bg-muted rounded-full h-2.5">
+                       <Progress value={progress} className="w-full" />
+                    </div>
+                    <p className="text-sm text-muted-foreground">A confirmation and a copy of your inquiry have been sent to your email.</p>
+                </div>
+                 <Button onClick={onRedirect}>
+                    <Home className="mr-2 h-4 w-4" /> Go to Home ({countdown}s)
+                </Button>
+            </DialogContent>
+        </Dialog>
+    );
+};
+
+
 export default function BrandForm({ setOpen }: BrandFormProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPending, startTransition] = useTransition();
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
+
 
   const form = useForm<BrandFormValues>({
     resolver: zodResolver(brandSchema),
@@ -73,6 +126,12 @@ export default function BrandForm({ setOpen }: BrandFormProps) {
   const budget = watch('estimatedBudget');
   const [budgetTier, budgetProgress] = getBudgetTier(budget);
 
+  const handleRedirect = () => {
+    setShowSuccessDialog(false);
+    setOpen(false);
+    router.push('/brand');
+  };
+
   async function processSubmit(data: BrandFormValues) {
     startTransition(async () => {
       const result = await submitBrandForm(data);
@@ -80,12 +139,10 @@ export default function BrandForm({ setOpen }: BrandFormProps) {
         toast({ title: 'Success!', description: result.message });
         setShowConfetti(true);
         generatePdf(data);
+        setShowSuccessDialog(true);
         setTimeout(() => {
           setShowConfetti(false);
-          setOpen(false);
-          form.reset();
-          setCurrentStep(0);
-        }, 5000);
+        }, 6000);
       } else {
         toast({ variant: 'destructive', title: 'Error', description: result.message });
       }
@@ -118,38 +175,98 @@ export default function BrandForm({ setOpen }: BrandFormProps) {
     return ["💎 Elite Collaboration", 75 + Math.min(25, ((budget - 1000) / 500) * 25)];
   }
 
-  const generatePdf = (data: BrandFormValues) => {
+ const generatePdf = (data: BrandFormValues) => {
     const doc = new jsPDF();
     const inquiryId = `YBT-${Date.now()}`;
-    
-    doc.setFontSize(22);
-    doc.text("Brand Collaboration Inquiry", 105, 20, { align: 'center' });
-    
-    doc.setFontSize(12);
-    doc.text(`Inquiry ID: ${inquiryId}`, 15, 40);
-    doc.text(`Date: ${new Date().toLocaleDateString()}`, 15, 47);
+    const submissionDate = new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
 
+    const pageHeight = doc.internal.pageSize.height;
+
+    // Header
+    doc.setFontSize(22);
+    doc.setFont('helvetica', 'bold');
+    doc.text("Collaboration Inquiry", 105, 20, { align: 'center' });
+    
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text("You B Tech", 20, 30);
+    doc.text("Digital Content & Brand Partnerships", 20, 35);
+    doc.text("youbtechcode@gmail.com", 20, 40);
+
+    doc.text(`Inquiry ID: ${inquiryId}`, 190, 30, { align: 'right' });
+    doc.text(`Date: ${submissionDate}`, 190, 35, { align: 'right' });
+    
+    doc.setDrawColor(220, 220, 220);
+    doc.line(15, 45, 195, 45);
+
+    // Bill To Section
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'bold');
+    doc.text("INQUIRY FROM (CLIENT)", 20, 55);
+    doc.setFont('helvetica', 'normal');
+    doc.text(data.brandName, 20, 60);
+    doc.text(data.contactPerson, 20, 65);
+    doc.text(data.workEmail, 20, 70);
+    doc.text(data.country, 20, 75);
+
+    // Table of services
     const tableData = [
-        ['Brand Name', data.brandName],
-        ['Contact Person', data.contactPerson],
-        ['Work Email', data.workEmail],
-        ['Product Link', data.productLink || 'N/A'],
-        ['Video Type', data.videoType],
-        ['Product Type', data.productType],
-        ['Description', data.description || 'N/A'],
-        ['Platforms', data.platforms.join(', ')],
-        ['Budget (USD)', `$${data.estimatedBudget}`],
-        ['Country', data.country],
-        ['Payment Method', data.paymentMethod],
+        ['Video Type', data.videoType.charAt(0).toUpperCase() + data.videoType.slice(1)],
+        ['Product Type', data.productType.charAt(0).toUpperCase() + data.productType.slice(1)],
+        ['Target Platforms', data.platforms.join(', ').replace(/\b\w/g, l => l.toUpperCase())],
+        ['Campaign Description', data.description || 'N/A'],
+        ['Brand/Product URL', data.productLink || 'N/A'],
     ];
 
     (doc as any).autoTable({
-        startY: 60,
-        head: [['Field', 'Details']],
+        startY: 85,
+        head: [['Service Description', 'Details']],
         body: tableData,
         theme: 'striped',
-        headStyles: { fillColor: [30, 144, 255] },
+        headStyles: { fillColor: [22, 163, 74] },
+        styles: { fontSize: 9, cellPadding: 2.5 },
+        columnStyles: { 0: { fontStyle: 'bold' } },
+        didDrawPage: (data: any) => {
+            // This ensures subsequent pages have footers too if the table is long
+            doc.setFontSize(8);
+            doc.setTextColor(150);
+            doc.text(`Inquiry ID: ${inquiryId}`, data.settings.margin.left, pageHeight - 10);
+            doc.text('This is a preliminary inquiry, not a binding contract.', 105, pageHeight - 10, { align: 'center' });
+            doc.text(`Page ${data.pageNumber}`, 195, pageHeight - 10, { align: 'right' });
+        }
     });
+
+    const finalY = (doc as any).lastAutoTable.finalY;
+
+    // Budget & Payment Summary
+    const budgetX = 130;
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Estimated Budget (USD)', budgetX, finalY + 15);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`$${data.estimatedBudget.toLocaleString()}`, 195, finalY + 15, { align: 'right' });
+    
+    doc.setFont('helvetica', 'bold');
+    doc.text('Payment Method', budgetX, finalY + 22);
+    doc.setFont('helvetica', 'normal');
+    doc.text(data.paymentMethod.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()), 195, finalY + 22, { align: 'right' });
+
+    doc.setDrawColor(220, 220, 220);
+    doc.line(budgetX - 5, finalY + 27, 195, finalY + 27);
+    
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text('TOTAL ESTIMATE', budgetX, finalY + 34);
+    doc.text(`$${data.estimatedBudget.toLocaleString()}`, 195, finalY + 34, { align: 'right' });
+
+    // Footer
+    doc.setFontSize(8);
+    doc.setTextColor(150);
+    doc.text('Thank you for your interest in collaborating with You B Tech. We will review your inquiry and respond within 48 hours.', 105, pageHeight - 20, { align: 'center' });
 
     doc.save(`YBT_Inquiry_${data.brandName.replace(/\s+/g, '_')}_${inquiryId}.pdf`);
   };
@@ -157,6 +274,8 @@ export default function BrandForm({ setOpen }: BrandFormProps) {
   return (
     <FormProvider {...form}>
       {showConfetti && typeof window !== 'undefined' && <ReactConfetti width={window.innerWidth} height={window.innerHeight} />}
+      <SubmissionSuccessDialog open={showSuccessDialog} onRedirect={handleRedirect} />
+      
       <div className="p-1">
         {/* Progress Bar */}
         <nav aria-label="Progress">
@@ -485,114 +604,116 @@ const Step5 = () => {
     });
 
     return (
-        <div className="space-y-6">
-             <div className="border rounded-xl shadow-sm">
-                <div className="p-6">
-                    <header className="flex justify-between items-start mb-6">
-                        <div>
-                            <h2 className="text-2xl font-bold font-headline text-primary flex items-center gap-2">
-                                <Sparkles className="w-6 h-6 text-accent" />
-                                You B Tech
-                            </h2>
-                            <p className="text-muted-foreground">Collaboration Inquiry</p>
-                        </div>
-                        <div className="text-right">
-                            <p className="font-semibold text-lg">{inquiryId}</p>
-                            <p className="text-sm text-muted-foreground">Date: {submissionDate}</p>
-                        </div>
-                    </header>
-
-                    <div className="grid sm:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <h3 className="text-sm font-semibold text-muted-foreground mb-2">BILL TO</h3>
-                            <div className="text-sm">
-                                <p className="font-bold">{values.brandName}</p>
-                                <p>{values.contactPerson}</p>
-                                <p>{values.workEmail}</p>
-                                <p>{values.country}</p>
-                            </div>
-                        </div>
-                         {values.productLink && (
+        <ScrollArea className="h-[60vh] sm:h-auto">
+            <div className="space-y-6 pr-6">
+                <div className="border rounded-xl shadow-sm">
+                    <div className="p-6">
+                        <header className="flex justify-between items-start mb-6">
                             <div>
-                                <h3 className="text-sm font-semibold text-muted-foreground mb-2">BRAND/PRODUCT</h3>
-                                <a href={values.productLink} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline break-all">{values.productLink}</a>
+                                <h2 className="text-2xl font-bold font-headline text-primary flex items-center gap-2">
+                                    <Sparkles className="w-6 h-6 text-accent" />
+                                    You B Tech
+                                </h2>
+                                <p className="text-muted-foreground">Collaboration Inquiry</p>
                             </div>
-                        )}
-                    </div>
-                
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Service Description</TableHead>
-                                <TableHead className="text-right">Details</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell>Video Type</TableCell>
-                                <TableCell className="text-right capitalize">{values.videoType}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell>Product Type</TableCell>
-                                <TableCell className="text-right capitalize">{values.productType}</TableCell>
-                            </TableRow>
-                             <TableRow>
-                                <TableCell>Target Platforms</TableCell>
-                                <TableCell className="text-right capitalize">{values.platforms.join(', ')}</TableCell>
-                            </TableRow>
-                            {values.description && (
-                                <TableRow>
-                                    <TableCell>Campaign Description</TableCell>
-                                    <TableCell className="text-right text-xs max-w-[200px] truncate">{values.description}</TableCell>
-                                </TableRow>
+                            <div className="text-right">
+                                <p className="font-semibold text-lg">{inquiryId}</p>
+                                <p className="text-sm text-muted-foreground">Date: {submissionDate}</p>
+                            </div>
+                        </header>
+
+                        <div className="grid sm:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <h3 className="text-sm font-semibold text-muted-foreground mb-2">BILL TO</h3>
+                                <div className="text-sm">
+                                    <p className="font-bold">{values.brandName}</p>
+                                    <p>{values.contactPerson}</p>
+                                    <p>{values.workEmail}</p>
+                                    <p>{values.country}</p>
+                                </div>
+                            </div>
+                            {values.productLink && (
+                                <div>
+                                    <h3 className="text-sm font-semibold text-muted-foreground mb-2">BRAND/PRODUCT</h3>
+                                    <a href={values.productLink} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline break-all">{values.productLink}</a>
+                                </div>
                             )}
-                        </TableBody>
-                    </Table>
+                        </div>
+                    
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Service Description</TableHead>
+                                    <TableHead className="text-right">Details</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>Video Type</TableCell>
+                                    <TableCell className="text-right capitalize">{values.videoType}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Product Type</TableCell>
+                                    <TableCell className="text-right capitalize">{values.productType}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Target Platforms</TableCell>
+                                    <TableCell className="text-right capitalize">{values.platforms.join(', ')}</TableCell>
+                                </TableRow>
+                                {values.description && (
+                                    <TableRow>
+                                        <TableCell>Campaign Description</TableCell>
+                                        <TableCell className="text-right text-xs max-w-[200px] truncate">{values.description}</TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
 
-                    <Separator className="my-6" />
+                        <Separator className="my-6" />
 
-                    <div className="flex justify-end">
-                        <div className="w-full max-w-xs space-y-2">
-                             <div className="flex justify-between font-semibold text-lg">
-                                <span>Estimated Budget</span>
-                                <span>${values.estimatedBudget.toLocaleString()}</span>
-                            </div>
-                             <div className="flex justify-between text-sm text-muted-foreground">
-                                <span>Payment Method</span>
-                                <span className="capitalize">{values.paymentMethod.replace('-', ' ')}</span>
+                        <div className="flex justify-end">
+                            <div className="w-full max-w-xs space-y-2">
+                                <div className="flex justify-between font-semibold text-lg">
+                                    <span>Estimated Budget</span>
+                                    <span>${values.estimatedBudget.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between text-sm text-muted-foreground">
+                                    <span>Payment Method</span>
+                                    <span className="capitalize">{values.paymentMethod.replace('-', ' ')}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="bg-muted/50 p-4 text-xs text-center text-muted-foreground rounded-b-xl">
-                    This is a preliminary inquiry. A formal proposal and invoice will be sent upon approval.
-                </div>
-            </div>
-
-
-            <FormField
-                control={useFormContext().control}
-                name="termsAgreed"
-                render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow-sm">
-                    <FormControl>
-                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                        <FormLabel>
-                        I agree to the 
-                        <Button variant="link" className="p-0 h-auto ml-1" type="button" onClick={() => setIsTermsOpen(true)}>Terms of Service</Button>
-                        and 
-                        <Button variant="link" className="p-0 h-auto ml-1" type="button" onClick={() => setIsPrivacyOpen(true)}>Privacy Policy</Button>
-                        .
-                        </FormLabel>
-                        <FormMessage />
+                    <div className="bg-muted/50 p-4 text-xs text-center text-muted-foreground rounded-b-xl">
+                        This is a preliminary inquiry. A formal proposal and invoice will be sent upon approval.
                     </div>
-                    </FormItem>
-                )}
-            />
-            <LegalModal isOpen={isTermsOpen} setIsOpen={setIsTermsOpen} title="Terms of Service" content={<BrandTerms />} />
-            <LegalModal isOpen={isPrivacyOpen} setIsOpen={setIsPrivacyOpen} title="Privacy Policy" content={<BrandPrivacy />} />
-        </div>
+                </div>
+
+
+                <FormField
+                    control={useFormContext().control}
+                    name="termsAgreed"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow-sm">
+                        <FormControl>
+                            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                            <FormLabel>
+                            I agree to the 
+                            <Button variant="link" className="p-0 h-auto ml-1" type="button" onClick={() => setIsTermsOpen(true)}>Terms of Service</Button>
+                            and 
+                            <Button variant="link" className="p-0 h-auto ml-1" type="button" onClick={() => setIsPrivacyOpen(true)}>Privacy Policy</Button>
+                            .
+                            </FormLabel>
+                            <FormMessage />
+                        </div>
+                        </FormItem>
+                    )}
+                />
+                <LegalModal isOpen={isTermsOpen} setIsOpen={setIsTermsOpen} title="Terms of Service" content={<BrandTerms />} />
+                <LegalModal isOpen={isPrivacyOpen} setIsOpen={setIsPrivacyOpen} title="Privacy Policy" content={<BrandPrivacy />} />
+            </div>
+        </ScrollArea>
     );
 };
