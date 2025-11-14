@@ -9,30 +9,13 @@ import Link from 'next/link';
 
 gsap.registerPlugin(useGSAP);
 
-const Card = ({ title, icon, href, external = false, className, children }) => {
-    const handleLinkClick = (e) => {
-        if (!external && href.startsWith('/brand#')) {
-            e.preventDefault();
-            const targetId = href.split('#')[1];
-            const targetElement = document.getElementById(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    };
-    
-    const content = (
+const Card = ({ title, icon, className, children }) => {
+    return (
         <div className={`card relative p-6 rounded-2xl overflow-hidden ${className}`}>
             <h3 className="font-bold text-lg mb-4 flex items-center gap-2">{icon}{title}</h3>
             {children}
         </div>
     );
-
-    if (external) {
-        return <a href={href} target="_blank" rel="noopener noreferrer">{content}</a>;
-    }
-
-    return <Link href={href} onClick={handleLinkClick}>{content}</Link>;
 };
 
 const CardLink = ({ text, href, external = false }) => {
@@ -120,19 +103,19 @@ const CardNav = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div onClick={handleLinkClick}>
-                            <Card title="About Us" icon={<Book size={20} />} href="/brand#about" className="bg-[var(--card-about-bg)] text-white">
+                            <Card title="About Us" icon={<Book size={20} />} className="bg-[var(--card-about-bg)] text-white">
                                 <CardLink text="Who is Brajendra?" href="/brand#about" />
                                 <CardLink text="Audience & Reach" href="/brand#audience" />
                             </Card>
                         </div>
                         <div onClick={handleLinkClick}>
-                            <Card title="Our Work" icon={<Youtube size={20} />} href="/brand#portfolio" className="bg-[var(--card-work-bg)] text-white">
+                            <Card title="Our Work" icon={<Youtube size={20} />} className="bg-[var(--card-work-bg)] text-white">
                                 <CardLink text="Past Collaborations" href="/brand#portfolio" />
                                 <CardLink text="YouTube Channel" href="https://youtube.com/@you_b_tech" external />
                             </Card>
                         </div>
                         <div onClick={handleLinkClick}>
-                            <Card title="Collaborate" icon={<Handshake size={20} />} href="/collaborate" className="bg-accent text-accent-foreground">
+                            <Card title="Collaborate" icon={<Handshake size={20} />} className="bg-accent text-accent-foreground">
                                 <CardLink text="Start Your Inquiry" href="/collaborate" />
                                 <CardLink text="Our Process" href="/brand#process" />
                             </Card>
