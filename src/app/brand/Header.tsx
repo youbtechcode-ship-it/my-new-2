@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Sparkles, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import ThemeSelector from './ThemeSelector';
 
 const navLinks = [
+  { href: '/', label: 'Home' },
   { href: '/subscriber', label: 'Connect' },
   { href: '/freelancer', label: 'Work' },
   { href: '/brand', label: 'Brands' },
@@ -47,7 +48,6 @@ const Header = () => {
                 <SheetContent side="right">
                   <div className="flex flex-col items-center justify-center h-full">
                   <nav className="flex flex-col items-center gap-4 text-lg font-medium text-muted-foreground">
-                     <Link href="/" className="px-3 py-1.5 hover:text-foreground transition-colors rounded-full">Home</Link>
                      {navLinks.map((link) => (
                        <Link key={link.href} href={link.href} className="px-3 py-1.5 hover:text-foreground transition-colors rounded-full">
                         {link.label}
