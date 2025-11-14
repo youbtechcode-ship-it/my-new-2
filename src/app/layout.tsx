@@ -26,10 +26,10 @@ export default function RootLayout({
       <body className={cn('font-body antialiased min-h-screen bg-background flex flex-col')}>
         <FirebaseClientProvider>
           <ThemeProvider 
-            attribute="data-theme" 
-            defaultTheme="youbtech"
-            enableSystem={false}
-            themes={themes.map(t => t.name)}
+            attribute="class" 
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
           >
             <main className="flex-grow">{children}</main>
             <Toaster />
