@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root, html[data-theme="youbtech"] {
+  :root {
     --background-hsl: 220 13% 95%;
     --foreground-hsl: 224 71% 4%;
     --card-hsl: 220 14% 97%;
@@ -30,55 +30,6 @@
     --card-work-bg: #81B29A;
   }
  
-  html[data-theme="ocean"] {
-    --primary-hsl: 205 92% 21%;
-    --accent-hsl: 180 100% 32%;
-    --card-about-bg: #033F63;
-    --card-work-bg: #28666E;
-  }
-
-  html[data-theme="sunset"] {
-    --primary-hsl: 345 100% 39%;
-    --accent-hsl: 12 100% 60%;
-    --card-about-bg: #C70039;
-    --card-work-bg: #FF5733;
-  }
-  
-  html[data-theme="forest"] {
-    --primary-hsl: 136 34% 29%;
-    --accent-hsl: 126 23% 42%;
-    --card-about-bg: #3A5A40;
-    --card-work-bg: #588157;
-  }
-
-  html[data-theme="rose"] {
-    --primary-hsl: 237 22% 30%;
-    --accent-hsl: 12 71% 70%;
-    --card-about-bg: #3D405B;
-    --card-work-bg: #E07A5F;
-  }
-  
-  html[data-theme="indigo"] {
-    --primary-hsl: 279 81% 22%;
-    --accent-hsl: 288 91% 26%;
-    --card-about-bg: #3C096C;
-    --card-work-bg: #6A057F;
-  }
-
-  html[data-theme="neutral"] {
-    --primary-hsl: 0 0% 15%;
-    --accent-hsl: 0 0% 32%;
-    --card-about-bg: #262626;
-    --card-work-bg: #525252;
-  }
-  
-  html[data-theme="mint"] {
-    --primary-hsl: 247 28% 23%;
-    --accent-hsl: 167 36% 52%;
-    --card-about-bg: #2E294E;
-    --card-work-bg: #58B09C;
-  }
-
   :root {
     --background: hsl(var(--background-hsl));
     --foreground: hsl(var(--foreground-hsl));

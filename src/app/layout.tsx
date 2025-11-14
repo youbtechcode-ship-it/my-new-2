@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
-import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from '@/components/ui/toaster';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
-import { themes } from '@/lib/themes';
 
 export const metadata: Metadata = {
   title: 'YBT Connect Pro',
@@ -25,16 +23,8 @@ export default function RootLayout({
       </head>
       <body className={cn('font-body antialiased min-h-screen bg-background flex flex-col')}>
         <FirebaseClientProvider>
-          <ThemeProvider
-            attribute="data-theme"
-            defaultTheme="youbtech"
-            themes={themes.map(t => t.name)}
-            disableTransitionOnChange
-            forcedTheme="light"
-          >
-            <main className="flex-grow">{children}</main>
-            <Toaster />
-          </ThemeProvider>
+          <main className="flex-grow">{children}</main>
+          <Toaster />
         </FirebaseClientProvider>
       </body>
     </html>

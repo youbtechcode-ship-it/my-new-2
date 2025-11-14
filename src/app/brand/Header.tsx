@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { Sparkles, Menu } from 'lucide-react';
-import ThemeSelector from './ThemeSelector';
 import {
   Sheet,
   SheetContent,
@@ -36,10 +35,6 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center gap-1">
-            <div className="pr-1">
-               <ThemeSelector />
-            </div>
-
             {/* Mobile Navigation */}
             <div className="sm:hidden">
               <Sheet>
