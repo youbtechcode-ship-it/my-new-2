@@ -30,10 +30,6 @@ export default function ThemeSelector() {
           <Moon className="mr-2 h-4 w-4" />
           <span>Black</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('bluesky')}>
-          <Palette className="mr-2 h-4 w-4" />
-          <span>Bluesky</span>
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
