@@ -20,6 +20,7 @@ export const brandSchema = z.object({
   brandName: z.string().min(2, 'Brand name must be at least 2 characters.'),
   contactPerson: z.string().min(2, 'Your name must be at least 2 characters.'),
   workEmail: z.string().email('Please enter a valid work email.'),
+  productLink: z.string().url().optional().or(z.literal('')),
   videoType: z.enum(['dedicated', 'integrated'], {
     errorMap: () => ({ message: "Please select a video type." }),
   }),

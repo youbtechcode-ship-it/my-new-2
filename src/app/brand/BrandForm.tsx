@@ -33,7 +33,7 @@ interface BrandFormProps {
 }
 
 const steps = [
-  { id: 'Step 1', name: 'Brand Details', fields: ['brandName', 'contactPerson', 'workEmail'], icon: User },
+  { id: 'Step 1', name: 'Brand Details', fields: ['brandName', 'contactPerson', 'workEmail', 'productLink'], icon: User },
   { id: 'Step 2', name: 'Overview', fields: ['videoType', 'platforms'], icon: Briefcase },
   { id: 'Step 3', name: 'Assets', fields: ['assetsLink', 'keywords'], icon: FileText },
   { id: 'Step 4', name: 'Budget', fields: ['estimatedBudget', 'country', 'paymentMethod'], icon: DollarSign },
@@ -53,6 +53,7 @@ export default function BrandForm({ setOpen }: BrandFormProps) {
       brandName: '',
       contactPerson: '',
       workEmail: '',
+      productLink: '',
       videoType: 'dedicated',
       platforms: [],
       assetsLink: '',
@@ -128,6 +129,7 @@ export default function BrandForm({ setOpen }: BrandFormProps) {
         ['Brand Name', data.brandName],
         ['Contact Person', data.contactPerson],
         ['Work Email', data.workEmail],
+        ['Product Link', data.productLink || 'N/A'],
         ['Video Type', data.videoType],
         ['Platforms', data.platforms.join(', ')],
         ['Budget (USD)', `$${data.estimatedBudget}`],
@@ -244,6 +246,13 @@ const Step1 = () => (
       <FormItem>
         <FormLabel>Work Email Address</FormLabel>
         <FormControl><Input placeholder="you@company.com" {...field} /></FormControl>
+        <FormMessage />
+      </FormItem>
+    )} />
+     <FormField control={useFormContext().control} name="productLink" render={({ field }) => (
+      <FormItem>
+        <FormLabel>Brand Website / Product URL (Optional)</FormLabel>
+        <FormControl><Input placeholder="https://example.com" {...field} /></FormControl>
         <FormMessage />
       </FormItem>
     )} />
@@ -426,6 +435,7 @@ const Step5 = () => {
             <div className="border rounded-lg p-4 space-y-2 bg-muted/30">
                 <p><strong>Brand:</strong> {values.brandName}</p>
                 <p><strong>Contact:</strong> {values.contactPerson} ({values.workEmail})</p>
+                {values.productLink && <p><strong>Website:</strong> {values.productLink}</p>}
                 <p><strong>Budget:</strong> ${values.estimatedBudget}</p>
                 <p><strong>Video Type:</strong> {values.videoType}</p>
                 <p><strong>Platforms:</strong> {values.platforms.join(', ')}</p>
