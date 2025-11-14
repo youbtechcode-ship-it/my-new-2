@@ -1,5 +1,5 @@
 'use client';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { X, RefreshCw, ArrowLeft, ArrowRight, Lock, Home } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -15,6 +15,9 @@ const SocialBrowserModal = ({ isOpen, setIsOpen, url }) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-4xl h-[90vh] p-0 flex flex-col">
+        <DialogHeader className="sr-only">
+            <DialogTitle>Social Media Browser</DialogTitle>
+        </DialogHeader>
         <header className="flex items-center p-2 bg-card border-b border-border rounded-t-lg">
           <div className="flex gap-1.5">
             <button onClick={() => setIsOpen(false)} className="w-3.5 h-3.5 bg-red-500 rounded-full"></button>

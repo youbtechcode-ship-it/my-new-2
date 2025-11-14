@@ -443,7 +443,9 @@ const Step5 = () => {
                                 <Button variant="link" className="p-0 h-auto ml-1" type="button">Terms of Service</Button>
                             </DialogTrigger>
                             <DialogContent>
-                                <DialogHeader><DialogTitle>Terms of Service</DialogTitle></DialogHeader>
+                                <DialogHeader>
+                                  <DialogTitle>Terms of Service</DialogTitle>
+                                </DialogHeader>
                                 <p>This is a placeholder for your Terms of Service. Please replace this with your actual terms.</p>
                             </DialogContent>
                         </Dialog>
@@ -453,7 +455,9 @@ const Step5 = () => {
                                 <Button variant="link" className="p-0 h-auto ml-1" type="button">Privacy Policy</Button>
                             </DialogTrigger>
                              <DialogContent>
-                                <DialogHeader><DialogTitle>Privacy Policy</DialogTitle></DialogHeader>
+                                <DialogHeader>
+                                  <DialogTitle>Privacy Policy</DialogTitle>
+                                </DialogHeader>
                                 <p>This is a placeholder for your Privacy Policy. Please replace this with your actual policy.</p>
                             </DialogContent>
                         </Dialog>
