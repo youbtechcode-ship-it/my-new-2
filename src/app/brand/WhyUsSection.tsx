@@ -1,6 +1,7 @@
 'use client';
 
 import { FiTarget, FiTrendingUp, FiMessageCircle, FiEdit, FiSearch, FiShield, FiHeart, FiGift, FiZap } from 'react-icons/fi';
+import { motion } from 'framer-motion';
 import GlareHover from './GlareHover';
 import FadeInSection from './FadeInSection';
 
@@ -16,24 +17,55 @@ const features = [
   { icon: <FiZap size={24} />, title: "Fast Turnaround", description: "Efficient process from proposal to publishing, without compromising quality." },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: 'easeOut',
+    },
+  },
+};
+
+
 const WhyUsSection = () => {
   return (
     <FadeInSection>
       <section className="py-20 px-4 container mx-auto">
         <h2 className="text-center font-headline text-4xl font-bold mb-12">Why Collaborate With Us?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+        >
           {features.map((feature, index) => (
-            <GlareHover key={index}>
-              <div className="bg-card border border-border rounded-2xl p-6 h-full text-center">
-                <div className="inline-block text-accent bg-accent/10 p-4 rounded-full mb-4">
-                  {feature.icon}
+            <motion.div key={index} variants={itemVariants}>
+              <GlareHover>
+                <div className="bg-card border border-border rounded-2xl p-6 h-full text-center">
+                  <div className="inline-block text-accent bg-accent/10 p-4 rounded-full mb-4">
+                    {feature.icon}
+                  </div>
+                  <h3 className="font-bold text-lg mb-2">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground">{feature.description}</p>
                 </div>
-                <h3 className="font-bold text-lg mb-2">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
-              </div>
-            </GlareHover>
+              </GlareHover>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
     </FadeInSection>
   );
