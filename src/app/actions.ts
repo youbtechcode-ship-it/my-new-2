@@ -49,28 +49,28 @@ export async function submitFreelancerForm(
   }
 }
 
-async function sendCollaborationEmail(data: z.infer<typeof brandSchema>) {
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: Number(process.env.SMTP_PORT) === 465,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
+
+async function sendCollaborationEmailToAdmin(data: z.infer<typeof brandSchema>) {
   const { 
     brandName, contactPerson, workEmail, productLink, videoType, productType, 
     description, platforms, estimatedBudget, country, paymentMethod 
   } = data;
-
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: Number(process.env.SMTP_PORT) === 465,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
 
   const emailHtml = `
     <h1>New Brand Collaboration Inquiry</h1>
     <p><strong>Brand Name:</strong> ${brandName}</p>
     <p><strong>Contact Person:</strong> ${contactPerson}</p>
     <p><strong>Work Email:</strong> ${workEmail}</p>
-    <p><strong>Product Link:</strong> <a href="${productLink}">${productLink}</a></p>
+    <p><strong>Product Link:</strong> <a href="${productLink}">${productLink || 'N/A'}</a></p>
     <hr>
     <h2>Campaign Details</h2>
     <p><strong>Video Type:</strong> ${videoType}</p>
@@ -85,7 +85,7 @@ async function sendCollaborationEmail(data: z.infer<typeof brandSchema>) {
   `;
 
   const mailOptions = {
-    from: `"${brandName}" <${process.env.SMTP_SENDER}>`,
+    from: `"YBT Connect" <${process.env.SMTP_SENDER}>`,
     to: process.env.EMAIL_RECIPIENT,
     subject: `New Collaboration Inquiry from ${brandName}`,
     html: emailHtml,
@@ -93,11 +93,44 @@ async function sendCollaborationEmail(data: z.infer<typeof brandSchema>) {
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log('Collaboration email sent successfully');
+    console.log('Collaboration email to admin sent successfully');
   } catch (error) {
-    console.error('Error sending collaboration email:', error);
-    // We don't want to fail the whole submission if the email fails, so we just log the error.
+    console.error('Error sending collaboration email to admin:', error);
+    throw error;
   }
+}
+
+async function sendConfirmationToBrand(data: z.infer<typeof brandSchema>) {
+    const { brandName, workEmail, contactPerson } = data;
+
+    const confirmationHtml = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+            <h2>Thank You for Your Interest in Collaborating with You B Tech!</h2>
+            <p>Hello ${contactPerson},</p>
+            <p>We have successfully received your collaboration inquiry for <strong>${brandName}</strong>. We appreciate you considering us for your campaign.</p>
+            <p>Our team will review the details you provided and get back to you within 24-48 hours with a formal proposal or any follow-up questions.</p>
+            <p>In the meantime, feel free to browse our <a href="https://youtube.com/@you_b_tech">YouTube channel</a> to see more of our work.</p>
+            <br>
+            <p>Best regards,</p>
+            <p><strong>Brajendra Choudhary</strong></p>
+            <p>Creator, You B Tech</p>
+        </div>
+    `;
+
+    const mailOptions = {
+        from: `"You B Tech" <${process.env.SMTP_SENDER}>`,
+        to: workEmail,
+        subject: 'Your Collaboration Inquiry with You B Tech has been Received',
+        html: confirmationHtml,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Confirmation email sent to brand successfully');
+    } catch (error) {
+        console.error('Error sending confirmation email to brand:', error);
+        // We don't want to fail the whole submission if this email fails, so we just log the error.
+    }
 }
 
 
@@ -113,8 +146,11 @@ export async function submitBrandForm(
       submittedAt: serverTimestamp(),
     });
 
-    // Send email in the background
-    sendCollaborationEmail(validatedData);
+    // Send emails in parallel
+    await Promise.all([
+      sendCollaborationEmailToAdmin(validatedData),
+      sendConfirmationToBrand(validatedData)
+    ]);
 
     return {
       success: true,
