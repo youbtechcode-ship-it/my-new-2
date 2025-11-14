@@ -3,6 +3,7 @@
 import FadeInSection from "./FadeInSection";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const CTASection = () => {
     return (
@@ -13,11 +14,11 @@ const CTASection = () => {
                     <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
                         Let's create something amazing together. Click the button below to start your inquiry.
                     </p>
-                    <Link href="/collaborate" passHref>
-                        <button className="bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold text-lg px-8 py-4 rounded-full shadow-lg transition-transform duration-300 hover:scale-105">
+                    <Button asChild size="lg" className="bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold text-lg px-8 py-4 rounded-full shadow-lg transition-transform duration-300 hover:scale-105">
+                        <Link href="/collaborate">
                            Start Collaboration Now <ArrowRight className="inline-block ml-2" />
-                        </button>
-                    </Link>
+                        </Link>
+                    </Button>
                     <p className="mt-6 text-sm text-muted-foreground">
                         💡 Quick Tip: Telegram promotion is always free with YouTube collaborations.
                     </p>

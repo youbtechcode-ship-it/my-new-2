@@ -3,13 +3,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { Menu, X, ArrowRight, Book, Youtube, Handshake, Users, Milestone } from 'lucide-react';
+import { Menu, X, ArrowRight, Book, Youtube, Handshake } from 'lucide-react';
 import ThemeSelector from './ThemeSelector';
 import Link from 'next/link';
 
 gsap.registerPlugin(useGSAP);
 
-const Card = ({ title, icon, link, href, external = false, className, children }) => {
+const Card = ({ title, icon, href, external = false, className, children }) => {
     const handleLinkClick = (e) => {
         if (!external && href.startsWith('/brand#')) {
             e.preventDefault();
@@ -32,7 +32,7 @@ const Card = ({ title, icon, link, href, external = false, className, children }
         return <a href={href} target="_blank" rel="noopener noreferrer">{content}</a>;
     }
 
-    return <Link href={href} onClick={handleLinkClick} passHref legacyBehavior><a>{content}</a></Link>;
+    return <Link href={href} onClick={handleLinkClick}>{content}</Link>;
 };
 
 const CardLink = ({ text, href, external = false }) => {
@@ -58,7 +58,7 @@ const CardLink = ({ text, href, external = false }) => {
         return <a href={href} target="_blank" rel="noopener noreferrer" className="block mt-2">{content}</a>;
     }
     
-    return <Link href={href} onClick={handleLinkClick} passHref legacyBehavior><a className="block mt-2">{content}</a></Link>;
+    return <Link href={href} onClick={handleLinkClick} className="block mt-2">{content}</Link>;
 };
 
 
@@ -99,7 +99,7 @@ const CardNav = () => {
     return (
         <header ref={container} className="fixed top-0 left-0 w-full z-50 p-4">
             <div className="container mx-auto flex justify-between items-center">
-                <div className="font-bold font-headline text-lg">YBT</div>
+                <Link href="/brand" className="font-bold font-headline text-lg">YBT</Link>
                 <div className="flex items-center gap-4">
                     <ThemeSelector />
                     <button onClick={() => setIsOpen(!isOpen)} className="bg-card p-2 rounded-full shadow-md border border-border">
