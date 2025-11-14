@@ -17,7 +17,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['"Inter"', 'sans-serif'],
+        body: ['"Poppins"', 'sans-serif'],
         headline: ['"Calistoga"', 'serif'],
       },
       colors: {
