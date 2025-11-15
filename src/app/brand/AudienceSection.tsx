@@ -63,7 +63,7 @@ const AudienceSection = () => {
                         />
                         <SocialStatCard 
                             icon={<Instagram size={48} />} 
-                            value={2.5}
+                            value={30}
                             suffix="K+"
                             description="Instagram Followers"
                             className="bg-gradient-to-br from-purple-500 via-pink-500 to-red-500"
@@ -71,7 +71,7 @@ const AudienceSection = () => {
                         />
                         <SocialStatCard 
                             icon={<Send size={48} />} 
-                            value={8.9}
+                            value={10}
                             suffix="K+"
                             description="Telegram Members"
                             className="bg-sky-500"
