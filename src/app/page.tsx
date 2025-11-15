@@ -34,7 +34,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-background">
       <Header />
       <main className="flex-grow">
-      <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden bg-background">
+      <section className="relative min-h-screen flex items-center justify-center text-center px-4 pt-20 md:pt-0 overflow-hidden bg-background">
           <div className="relative z-10">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-foreground mb-4">
                 Welcome to YBT Connect
