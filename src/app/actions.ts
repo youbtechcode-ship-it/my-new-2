@@ -75,8 +75,9 @@ export async function submitSubscriberForm(
       submissionDate: serverTimestamp(),
     });
     
-    // Send email notification to admin if configured
-    await sendSubscriberEmailToAdmin(validatedData);
+    if (isSmtpConfigured) {
+        await sendSubscriberEmailToAdmin(validatedData);
+    }
     
     return { success: true, message: 'Thank you! Your message has been delivered.' };
   } catch (error) {
@@ -182,11 +183,12 @@ export async function submitFreelancerForm(
       submissionDate: serverTimestamp(),
     });
 
-    // Send emails in parallel for better performance if configured
-    await Promise.all([
-        sendFreelancerEmailToAdmin(validatedData),
-        sendConfirmationToFreelancer(validatedData)
-    ]);
+    if (isSmtpConfigured) {
+        await Promise.all([
+            sendFreelancerEmailToAdmin(validatedData),
+            sendConfirmationToFreelancer(validatedData)
+        ]);
+    }
 
     return {
       success: true,
@@ -292,18 +294,26 @@ export async function submitBrandForm(
 ): Promise<FormState> {
   try {
     const { firestore } = initializeFirebase();
-    const validatedData = brandSchema.parse(data);
+    
+    // Ensure estimatedBudget is a number before validation
+    const dataWithNumericBudget = {
+      ...data,
+      estimatedBudget: Number(data.estimatedBudget),
+    };
+
+    const validatedData = brandSchema.parse(dataWithNumericBudget);
 
     await addDoc(collection(firestore, 'brand_collaborations'), {
       ...validatedData,
       submissionDate: serverTimestamp(),
     });
 
-    // Send emails in parallel if configured
-    await Promise.all([
-      sendCollaborationEmailToAdmin(validatedData),
-      sendConfirmationToBrand(validatedData)
-    ]);
+    if (isSmtpConfigured) {
+        await Promise.all([
+          sendCollaborationEmailToAdmin(validatedData),
+          sendConfirmationToBrand(validatedData)
+        ]);
+    }
 
     return {
       success: true,

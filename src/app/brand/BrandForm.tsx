@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useTransition, useEffect } from 'react';
@@ -455,7 +456,7 @@ const Step2 = () => (
                           const currentValue = field.value || [];
                           return checked
                             ? field.onChange([...currentValue, item.id])
-                            : field.onChange(currentValue.filter(value => value !== item.id));
+                            : field.onChange(currentValue.filter((value: string) => value !== item.id));
                         }}
                       />
                     </FormControl>
