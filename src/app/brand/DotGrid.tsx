@@ -168,7 +168,7 @@ const DotGrid: React.FC<DotGridProps> = ({
         const dy = dot.cy - py;
         const dsq = dx * dx + dy * dy;
         
-        let style = hslToRgba(computedBaseColor, 0.1);
+        let style = hslToRgba(computedBaseColor, 0.05);
 
         if (dsq <= proxSq) {
           const dist = Math.sqrt(dsq);
@@ -320,5 +320,3 @@ const DotGrid: React.FC<DotGridProps> = ({
 };
 
 export default DotGrid;
-
-    
