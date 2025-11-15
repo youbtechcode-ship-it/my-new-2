@@ -1,7 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import DotGrid from './DotGrid';
 import { Sparkles } from 'lucide-react';
 
 const HeroSection = () => {
@@ -11,19 +10,6 @@ const HeroSection = () => {
 
     return (
         <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden bg-background">
-            <DotGrid
-                dotSize={1.5}
-                gap={30}
-                baseColor="hsl(var(--accent-hsl))"
-                activeColor="hsl(var(--primary-hsl))"
-                proximity={120}
-                speedTrigger={200}
-                shockRadius={200}
-                shockStrength={2}
-                maxSpeed={3000}
-                resistance={500}
-                returnDuration={1}
-            />
             <div className="relative z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -32,7 +18,7 @@ const HeroSection = () => {
                 >
                     <Button variant="outline" size="sm" className="rounded-full bg-background/10 backdrop-blur-sm border-foreground/20 hover:bg-background/20">
                         <Sparkles className="w-4 h-4 mr-2 text-yellow-300" />
-                        Interactive Background
+                        You B Tech
                     </Button>
                 </motion.div>
 

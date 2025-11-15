@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Header from './brand/Header';
 import Footer from './brand/Footer';
-import DotGrid from './brand/DotGrid';
 import { motion } from 'framer-motion';
 
 const userTypes = [
@@ -37,20 +36,6 @@ export default function Home() {
       <Header />
       <main className="flex-grow">
       <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden bg-background">
-          <DotGrid
-              dotSize={1.5}
-              gap={30}
-              baseColor="hsl(var(--accent-hsl))"
-              activeColor="hsl(var(--primary-hsl))"
-              proximity={120}
-              speedTrigger={200}
-              shockRadius={200}
-              shockStrength={2}
-              maxSpeed={3000}
-              resistance={500}
-              returnDuration={1}
-              className="bg-background"
-          />
           <div className="relative z-10">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-foreground">
                 Welcome to YBT Connect
