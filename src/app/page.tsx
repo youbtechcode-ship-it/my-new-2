@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Header from './brand/Header';
 import Footer from './brand/Footer';
-import Waves from './brand/Waves';
 
 const userTypes = [
   {
@@ -36,10 +35,6 @@ export default function Home() {
       <Header />
       <main className="flex-grow">
       <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden bg-background">
-          <Waves 
-            className="absolute inset-0 z-0" 
-            lineColor="hsla(var(--primary-hsl), 0.2)"
-          />
           <div className="relative z-10">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-foreground">
                 Welcome to YBT Connect
