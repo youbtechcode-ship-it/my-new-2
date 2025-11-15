@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import Header from './brand/Header';
 import Footer from './brand/Footer';
 import { motion } from 'framer-motion';
+import Waves from './brand/Waves';
 
 const userTypes = [
   {
@@ -36,6 +37,7 @@ export default function Home() {
       <Header />
       <main className="flex-grow">
       <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden bg-background">
+          <Waves className="absolute inset-0 z-0" />
           <div className="relative z-10">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-foreground">
                 Welcome to YBT Connect

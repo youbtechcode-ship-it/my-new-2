@@ -10,21 +10,25 @@ import WhyUsSection from './WhyUsSection';
 import ProcessSection from './ProcessSection';
 import CTASection from './CTASection';
 import Footer from './Footer';
+import Waves from './Waves';
 
 export default function BrandPage() {
   return (
       <div className="bg-background text-foreground font-body">
-        <Header />
-        <main>
-          <HeroSection />
-          <AboutSection />
-          <AudienceSection />
-          <CollaborationsSection />
-          <WhyUsSection />
-          <ProcessSection />
-          <CTASection />
-        </main>
-        <Footer />
+        <Waves className="fixed inset-0 z-0 opacity-50" />
+        <div className="relative z-10">
+          <Header />
+          <main>
+            <HeroSection />
+            <AboutSection />
+            <AudienceSection />
+            <CollaborationsSection />
+            <WhyUsSection />
+            <ProcessSection />
+            <CTASection />
+          </main>
+          <Footer />
+        </div>
       </div>
   );
 }
