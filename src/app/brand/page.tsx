@@ -15,7 +15,10 @@ import Waves from './Waves';
 export default function BrandPage() {
   return (
       <div className="bg-background text-foreground font-body">
-        <Waves className="fixed inset-0 z-0 opacity-50" />
+        <Waves 
+          className="fixed inset-0 z-0" 
+          lineColor="hsla(var(--primary-hsl), 0.2)"
+        />
         <div className="relative z-10">
           <Header />
           <main>
