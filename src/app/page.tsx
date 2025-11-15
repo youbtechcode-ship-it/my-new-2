@@ -44,7 +44,7 @@ export default function Home() {
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 w-full max-w-6xl">
                 {userTypes.map((user) => (
-                  <Card key={user.title} className="flex flex-col text-center items-center transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 border-2 border-transparent hover:border-accent bg-card/50 backdrop-blur-sm">
+                  <Card key={user.title} className="flex flex-col text-center items-center transition-all duration-300 ease-in-out shadow-md hover:shadow-2xl hover:-translate-y-2 border-2 border-border hover:border-accent bg-card/50 backdrop-blur-sm">
                     <CardHeader className="items-center">
                       <div className="p-4 bg-accent/10 rounded-full">
                         {user.icon}
