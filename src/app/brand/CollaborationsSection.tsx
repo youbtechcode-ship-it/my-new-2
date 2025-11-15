@@ -11,31 +11,36 @@ const collaborations = [
     brand: 'You B Tech AI',
     description: 'Developed an AI-powered content generation tool.',
     videoId: 'pQtqtDueGec',
+    channelLink: ''
   },
   {
     brand: 'Lovart AI',
     description: 'AI Image generation platform collaboration.',
     videoId: 'yNYspBQNrcc',
+    channelLink: ''
   },
   {
     brand: 'TestSprite',
     description: 'AI-driven unit testing tool integration.',
     videoId: 'sqC4K52fbkw',
+    channelLink: ''
   },
   {
     brand: 'Storm MCP',
     description: 'Minecraft server management platform feature.',
     videoId: 'fniHbiW26ic',
+    channelLink: ''
   },
   {
     brand: 'TRAE',
     description: 'AI-powered social media content automation.',
     videoId: 'RxRMmOM3yPo',
+    channelLink: ''
   },
   {
     brand: '10+ More Collaborations',
     description: 'Explore more successful partnerships on our channel.',
-    videoId: '', // Will link to the channel directly
+    videoId: '',
     channelLink: 'https://youtube.com/@you_b_tech'
   },
 ];
