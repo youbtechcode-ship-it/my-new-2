@@ -10,15 +10,10 @@ import WhyUsSection from './WhyUsSection';
 import ProcessSection from './ProcessSection';
 import CTASection from './CTASection';
 import Footer from './Footer';
-import Waves from './Waves';
 
 export default function BrandPage() {
   return (
-      <div className="bg-transparent text-foreground font-body">
-        <Waves 
-          className="fixed inset-0 z-0" 
-          lineColor="hsla(var(--primary-hsl), 0.2)"
-        />
+      <div className="bg-background text-foreground font-body">
         <div className="relative z-10">
           <Header />
           <main>
