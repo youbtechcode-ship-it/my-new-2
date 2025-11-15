@@ -531,7 +531,7 @@ const Step4 = ({ budgetTier, budgetProgress }: { budgetTier: string; budgetProgr
                     type="number" 
                     placeholder="e.g., 500" 
                     {...field}
-                    onChange={e => field.onChange(parseInt(e.target.value, 10) || 0)}
+                    onChange={e => field.onChange(e.target.value === '' ? 0 : e.target.valueAsNumber)}
                 />
                 </FormControl>
                 <FormMessage />

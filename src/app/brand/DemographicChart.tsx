@@ -9,10 +9,15 @@ import GlareHover from './GlareHover';
 
 type ViewType = 'pie' | 'bar' | 'list';
 
-const DemographicChart = ({ title, data }) => {
+interface DemographicData {
+  title: string;
+  data: { name: string; value: number; color: string }[];
+}
+
+const DemographicChart = ({ title, data }: DemographicData) => {
     const [view, setView] = useState<ViewType>('pie');
 
-    const CustomTooltip = ({ active, payload }) => {
+    const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: any[] }) => {
         if (active && payload && payload.length) {
             const dataPoint = payload[0].payload;
             return (
