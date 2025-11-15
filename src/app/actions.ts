@@ -12,21 +12,28 @@ type FormState = {
   message: string;
 };
 
+// Check if SMTP is configured
+const isSmtpConfigured = !!process.env.SMTP_HOST && !!process.env.SMTP_USER && !!process.env.SMTP_PASS;
+
 // This transport should be configured with your email provider's details.
 // For now, it uses environment variables which you would need to set up.
-const transporter = nodemailer.createTransport({
+const transporter = isSmtpConfigured ? nodemailer.createTransport({
   host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
+  port: Number(process.env.SMTP_PORT) || 587,
   secure: Number(process.env.SMTP_PORT) === 465,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
-});
+}) : null;
 
 // --- SUBSCRIBER ACTIONS ---
 
 async function sendSubscriberEmailToAdmin(data: z.infer<typeof subscriberSchema>) {
+  if (!transporter) {
+    console.warn("SMTP not configured, skipping admin email for subscriber.");
+    return;
+  }
   const { name, whatsappNumber, message } = data;
 
   const emailHtml = `
@@ -41,7 +48,7 @@ async function sendSubscriberEmailToAdmin(data: z.infer<typeof subscriberSchema>
   `;
 
   const mailOptions = {
-    from: `"YBT Connect" <${process.env.SMTP_SENDER}>`,
+    from: `"YBT Connect" <${process.env.SMTP_SENDER || 'noreply@example.com'}>`,
     to: "youbtechcode@gmail.com",
     subject: `[Subscriber] New Message from ${name}`,
     html: emailHtml,
@@ -67,7 +74,7 @@ export async function submitSubscriberForm(
       submittedAt: serverTimestamp(),
     });
     
-    // Send email notification to admin
+    // Send email notification to admin if configured
     await sendSubscriberEmailToAdmin(validatedData);
     
     return { success: true, message: 'Thank you! Your message has been delivered.' };
@@ -81,6 +88,10 @@ export async function submitSubscriberForm(
 // --- FREELANCER ACTIONS ---
 
 async function sendFreelancerEmailToAdmin(data: z.infer<typeof freelancerSchema>) {
+    if (!transporter) {
+      console.warn("SMTP not configured, skipping admin email for freelancer.");
+      return;
+    }
     const { fullName, email, mobileNumber, portfolioLink, skills, experience, description } = data;
 
     const emailHtml = `
@@ -101,7 +112,7 @@ async function sendFreelancerEmailToAdmin(data: z.infer<typeof freelancerSchema>
     `;
 
     const mailOptions = {
-        from: `"YBT Connect" <${process.env.SMTP_SENDER}>`,
+        from: `"YBT Connect" <${process.env.SMTP_SENDER || 'noreply@example.com'}>`,
         to: "youbtechcode@gmail.com",
         subject: `[Freelancer] New Application from ${fullName}`,
         html: emailHtml,
@@ -111,11 +122,15 @@ async function sendFreelancerEmailToAdmin(data: z.infer<typeof freelancerSchema>
         await transporter.sendMail(mailOptions);
     } catch (error) {
         console.error('Error sending freelancer email to admin:', error);
-        throw new Error("Could not send admin notification.");
+        // We will not throw an error, to allow the process to continue
     }
 }
 
 async function sendConfirmationToFreelancer(data: z.infer<typeof freelancerSchema>) {
+    if (!transporter) {
+      console.warn("SMTP not configured, skipping confirmation email to freelancer.");
+      return;
+    }
     const { fullName, email } = data;
 
     const confirmationHtml = `
@@ -133,7 +148,7 @@ async function sendConfirmationToFreelancer(data: z.infer<typeof freelancerSchem
     `;
 
     const mailOptions = {
-        from: `"You B Tech" <${process.env.SMTP_SENDER}>`,
+        from: `"You B Tech" <${process.env.SMTP_SENDER || 'noreply@example.com'}>`,
         to: email,
         subject: 'We Have Received Your Freelancer Application',
         html: confirmationHtml,
@@ -160,7 +175,7 @@ export async function submitFreelancerForm(
       submittedAt: serverTimestamp(),
     });
 
-    // Send emails in parallel for better performance
+    // Send emails in parallel for better performance if configured
     await Promise.all([
         sendFreelancerEmailToAdmin(validatedData),
         sendConfirmationToFreelancer(validatedData)
@@ -181,6 +196,11 @@ export async function submitFreelancerForm(
 // --- BRAND ACTIONS ---
 
 async function sendCollaborationEmailToAdmin(data: z.infer<typeof brandSchema>) {
+  if (!transporter) {
+      console.warn("SMTP not configured, skipping admin email for brand collab.");
+      return;
+    }
+
   const { 
     brandName, contactPerson, workEmail, productLink, videoType, productType, 
     description, platforms, estimatedBudget, country, paymentMethod 
@@ -209,7 +229,7 @@ async function sendCollaborationEmailToAdmin(data: z.infer<typeof brandSchema>) 
   `;
 
   const mailOptions = {
-    from: `"YBT Connect" <${process.env.SMTP_SENDER}>`,
+    from: `"YBT Connect" <${process.env.SMTP_SENDER || 'noreply@example.com'}>`,
     to: "youbtechcode@gmail.com",
     subject: `[Brand] New Collaboration Inquiry from ${brandName}`,
     html: emailHtml,
@@ -219,11 +239,15 @@ async function sendCollaborationEmailToAdmin(data: z.infer<typeof brandSchema>) 
     await transporter.sendMail(mailOptions);
   } catch (error) {
     console.error('Error sending collaboration email to admin:', error);
-    throw new Error("Could not send admin notification.");
+    // We will not throw an error
   }
 }
 
 async function sendConfirmationToBrand(data: z.infer<typeof brandSchema>) {
+    if (!transporter) {
+      console.warn("SMTP not configured, skipping confirmation email to brand.");
+      return;
+    }
     const { brandName, workEmail, contactPerson } = data;
 
     const confirmationHtml = `
@@ -241,7 +265,7 @@ async function sendConfirmationToBrand(data: z.infer<typeof brandSchema>) {
     `;
 
     const mailOptions = {
-        from: `"You B Tech" <${process.env.SMTP_SENDER}>`,
+        from: `"You B Tech" <${process.env.SMTP_SENDER || 'noreply@example.com'}>`,
         to: workEmail,
         subject: 'Your Collaboration Inquiry with You B Tech has been Received',
         html: confirmationHtml,
@@ -268,7 +292,7 @@ export async function submitBrandForm(
       submittedAt: serverTimestamp(),
     });
 
-    // Send emails in parallel
+    // Send emails in parallel if configured
     await Promise.all([
       sendCollaborationEmailToAdmin(validatedData),
       sendConfirmationToBrand(validatedData)
