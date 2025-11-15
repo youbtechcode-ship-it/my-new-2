@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Menu } from 'lucide-react';
+import { Menu, Home, MessageSquare, Briefcase, Building2 } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -13,10 +13,10 @@ import { Button } from '@/components/ui/button';
 import ThemeSelector from './ThemeSelector';
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/subscriber', label: 'Connect' },
-  { href: '/freelancer', label: 'Work' },
-  { href: '/brand', label: 'Brands' },
+  { href: '/', label: 'Home', icon: <Home className="w-6 h-6" /> },
+  { href: '/subscriber', label: 'Connect', icon: <MessageSquare className="w-6 h-6" /> },
+  { href: '/freelancer', label: 'Work', icon: <Briefcase className="w-6 h-6" /> },
+  { href: '/brand', label: 'Brands', icon: <Building2 className="w-6 h-6" /> },
 ];
 
 const Header = () => {
@@ -47,19 +47,22 @@ const Header = () => {
                     <Menu size={18} />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right">
+                <SheetContent side="bottom" className="rounded-t-2xl">
                   <SheetHeader>
                     <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                   </SheetHeader>
-                  <div className="flex flex-col items-center justify-center h-full">
-                  <nav className="flex flex-col items-center gap-4 text-lg font-medium text-muted-foreground">
+                  <nav className="grid grid-cols-4 gap-4 pt-4">
                      {navLinks.map((link) => (
-                       <Link key={link.href} href={link.href} className="px-3 py-1.5 hover:text-foreground transition-colors rounded-full">
-                        {link.label}
+                       <Link 
+                        key={link.href} 
+                        href={link.href} 
+                        className="flex flex-col items-center justify-center gap-1 p-2 rounded-lg text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                       >
+                        {link.icon}
+                        <span className="text-xs font-medium">{link.label}</span>
                       </Link>
                     ))}
                   </nav>
-                  </div>
                 </SheetContent>
               </Sheet>
             </div>
