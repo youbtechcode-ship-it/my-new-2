@@ -14,7 +14,7 @@ import Waves from './Waves';
 
 export default function BrandPage() {
   return (
-      <div className="bg-background text-foreground font-body">
+      <div className="bg-transparent text-foreground font-body">
         <Waves 
           className="fixed inset-0 z-0" 
           lineColor="hsla(var(--primary-hsl), 0.2)"
