@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Header from './brand/Header';
 import Footer from './brand/Footer';
-import { motion } from 'framer-motion';
 import Waves from './brand/Waves';
 
 const userTypes = [
@@ -78,3 +77,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
