@@ -72,7 +72,7 @@ export async function submitSubscriberForm(
 
     await addDoc(collection(firestore, 'subscribers'), {
       ...validatedData,
-      submittedAt: serverTimestamp(),
+      submissionDate: serverTimestamp(),
     });
     
     // Send email notification to admin if configured
@@ -179,7 +179,7 @@ export async function submitFreelancerForm(
 
     await addDoc(collection(firestore, 'freelancers'), {
       ...validatedData,
-      submittedAt: serverTimestamp(),
+      submissionDate: serverTimestamp(),
     });
 
     // Send emails in parallel for better performance if configured
@@ -296,7 +296,7 @@ export async function submitBrandForm(
 
     await addDoc(collection(firestore, 'brand_collaborations'), {
       ...validatedData,
-      submittedAt: serverTimestamp(),
+      submissionDate: serverTimestamp(),
     });
 
     // Send emails in parallel if configured

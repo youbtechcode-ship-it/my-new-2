@@ -38,7 +38,7 @@ export const brandSchema = z.object({
   paymentMethod: z.enum(['upi', 'wise', 'paypal', 'debit-card', 'credit-card', 'bank-account'], {
     errorMap: () => ({ message: "Please select a payment method." }),
   }),
-  termsAgreed: z.literal(true, {
-    errorMap: () => ({ message: 'You must agree to the terms and conditions.' }),
+  termsAgreed: z.boolean().refine(val => val === true, {
+    message: 'You must agree to the terms and conditions.',
   }),
 });
