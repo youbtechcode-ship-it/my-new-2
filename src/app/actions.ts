@@ -12,6 +12,8 @@ type FormState = {
   message: string;
 };
 
+// This transport should be configured with your email provider's details.
+// For now, it uses environment variables which you would need to set up.
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),
@@ -22,12 +24,16 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Subscriber Email to Admin
+// --- SUBSCRIBER ACTIONS ---
+
 async function sendSubscriberEmailToAdmin(data: z.infer<typeof subscriberSchema>) {
   const { name, whatsappNumber, message } = data;
 
   const emailHtml = `
     <h1>New Subscriber Message</h1>
+    <p>A new message has been submitted through the connect form.</p>
+    <hr>
+    <h2>Details:</h2>
     <p><strong>Name:</strong> ${name}</p>
     <p><strong>WhatsApp Number:</strong> ${whatsappNumber}</p>
     <p><strong>Message:</strong></p>
@@ -36,17 +42,16 @@ async function sendSubscriberEmailToAdmin(data: z.infer<typeof subscriberSchema>
 
   const mailOptions = {
     from: `"YBT Connect" <${process.env.SMTP_SENDER}>`,
-    to: process.env.EMAIL_RECIPIENT,
-    subject: `New Message from Subscriber: ${name}`,
+    to: "youbtechcode@gmail.com",
+    subject: `[Subscriber] New Message from ${name}`,
     html: emailHtml,
   };
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log('Subscriber email to admin sent successfully');
   } catch (error) {
     console.error('Error sending subscriber email to admin:', error);
-    // Non-critical, so we don't throw
+    // Non-critical, so we don't throw and fail the whole process
   }
 }
 
@@ -56,6 +61,7 @@ export async function submitSubscriberForm(
   try {
     const { firestore } = initializeFirebase();
     const validatedData = subscriberSchema.parse(data);
+
     await addDoc(collection(firestore, 'subscribers'), {
       ...validatedData,
       submittedAt: serverTimestamp(),
@@ -71,18 +77,23 @@ export async function submitSubscriberForm(
   }
 }
 
-// Freelancer Emails
+
+// --- FREELANCER ACTIONS ---
+
 async function sendFreelancerEmailToAdmin(data: z.infer<typeof freelancerSchema>) {
     const { fullName, email, mobileNumber, portfolioLink, skills, experience, description } = data;
 
     const emailHtml = `
         <h1>New Freelancer Application</h1>
+        <p>A new freelancer has applied to work with you.</p>
+        <hr>
+        <h2>Applicant Details:</h2>
         <p><strong>Name:</strong> ${fullName}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Mobile:</strong> ${mobileNumber}</p>
         <p><strong>Portfolio:</strong> <a href="${portfolioLink}">${portfolioLink}</a></p>
         <hr>
-        <h2>Application Details</h2>
+        <h2>Application Details:</h2>
         <p><strong>Skills:</strong> ${skills.join(', ')}</p>
         <p><strong>Experience:</strong> ${experience}</p>
         <p><strong>Description:</strong></p>
@@ -91,17 +102,16 @@ async function sendFreelancerEmailToAdmin(data: z.infer<typeof freelancerSchema>
 
     const mailOptions = {
         from: `"YBT Connect" <${process.env.SMTP_SENDER}>`,
-        to: process.env.EMAIL_RECIPIENT,
-        subject: `New Freelancer Application from ${fullName}`,
+        to: "youbtechcode@gmail.com",
+        subject: `[Freelancer] New Application from ${fullName}`,
         html: emailHtml,
     };
 
     try {
         await transporter.sendMail(mailOptions);
-        console.log('Freelancer application email to admin sent successfully');
     } catch (error) {
         console.error('Error sending freelancer email to admin:', error);
-        throw error;
+        throw new Error("Could not send admin notification.");
     }
 }
 
@@ -131,10 +141,9 @@ async function sendConfirmationToFreelancer(data: z.infer<typeof freelancerSchem
 
     try {
         await transporter.sendMail(mailOptions);
-        console.log('Confirmation email sent to freelancer successfully');
     } catch (error) {
         console.error('Error sending confirmation email to freelancer:', error);
-        // Do not throw, as admin notification is more critical
+        // Do not throw, as admin notification is more critical. We can still proceed.
     }
 }
 
@@ -151,7 +160,7 @@ export async function submitFreelancerForm(
       submittedAt: serverTimestamp(),
     });
 
-    // Send emails
+    // Send emails in parallel for better performance
     await Promise.all([
         sendFreelancerEmailToAdmin(validatedData),
         sendConfirmationToFreelancer(validatedData)
@@ -163,12 +172,14 @@ export async function submitFreelancerForm(
     };
   } catch (error) {
     console.error('Error submitting freelancer form:', error);
-    return { success: false, message: 'An unexpected error occurred. Please try again.' };
+    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred. Please try again.';
+    return { success: false, message: errorMessage };
   }
 }
 
 
-// Brand Emails
+// --- BRAND ACTIONS ---
+
 async function sendCollaborationEmailToAdmin(data: z.infer<typeof brandSchema>) {
   const { 
     brandName, contactPerson, workEmail, productLink, videoType, productType, 
@@ -177,18 +188,21 @@ async function sendCollaborationEmailToAdmin(data: z.infer<typeof brandSchema>) 
 
   const emailHtml = `
     <h1>New Brand Collaboration Inquiry</h1>
+    <p>A new brand has submitted an inquiry for collaboration.</p>
+    <hr>
+    <h2>Brand Details:</h2>
     <p><strong>Brand Name:</strong> ${brandName}</p>
     <p><strong>Contact Person:</strong> ${contactPerson}</p>
     <p><strong>Work Email:</strong> ${workEmail}</p>
     <p><strong>Product Link:</strong> <a href="${productLink}">${productLink || 'N/A'}</a></p>
     <hr>
-    <h2>Campaign Details</h2>
+    <h2>Campaign Details:</h2>
     <p><strong>Video Type:</strong> ${videoType}</p>
     <p><strong>Product Type:</strong> ${productType}</p>
     <p><strong>Platforms:</strong> ${platforms.join(', ')}</p>
     <p><strong>Description:</strong> ${description || 'N/A'}</p>
     <hr>
-    <h2>Budget & Logistics</h2>
+    <h2>Budget & Logistics:</h2>
     <p><strong>Estimated Budget:</strong> $${estimatedBudget}</p>
     <p><strong>Country:</strong> ${country}</p>
     <p><strong>Payment Method:</strong> ${paymentMethod}</p>
@@ -196,17 +210,16 @@ async function sendCollaborationEmailToAdmin(data: z.infer<typeof brandSchema>) 
 
   const mailOptions = {
     from: `"YBT Connect" <${process.env.SMTP_SENDER}>`,
-    to: process.env.EMAIL_RECIPIENT,
-    subject: `New Collaboration Inquiry from ${brandName}`,
+    to: "youbtechcode@gmail.com",
+    subject: `[Brand] New Collaboration Inquiry from ${brandName}`,
     html: emailHtml,
   };
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log('Collaboration email to admin sent successfully');
   } catch (error) {
     console.error('Error sending collaboration email to admin:', error);
-    throw error;
+    throw new Error("Could not send admin notification.");
   }
 }
 
@@ -236,7 +249,6 @@ async function sendConfirmationToBrand(data: z.infer<typeof brandSchema>) {
 
     try {
         await transporter.sendMail(mailOptions);
-        console.log('Confirmation email sent to brand successfully');
     } catch (error) {
         console.error('Error sending confirmation email to brand:', error);
         // We don't want to fail the whole submission if this email fails, so we just log the error.
