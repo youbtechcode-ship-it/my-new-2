@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useTransition } from 'react';
@@ -12,8 +13,17 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 type SubscriberFormValues = z.infer<typeof subscriberSchema>;
+
+const messageTypes = [
+  'General message',
+  'Feedback',
+  'Suggestions',
+  'Product questions',
+  'Personal message',
+];
 
 export default function SubscriberForm() {
   const [isPending, startTransition] = useTransition();
@@ -25,6 +35,7 @@ export default function SubscriberForm() {
       name: '',
       whatsappNumber: '',
       message: '',
+      messageType: '',
     },
   });
 
@@ -72,6 +83,28 @@ export default function SubscriberForm() {
               <FormControl>
                 <Input placeholder="+1 234 567 890" {...field} />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+         <FormField
+          control={form.control}
+          name="messageType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Message Type</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a message type" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {messageTypes.map(type => (
+                    <SelectItem key={type} value={type}>{type}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

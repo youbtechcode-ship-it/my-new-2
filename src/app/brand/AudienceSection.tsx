@@ -2,13 +2,22 @@
 
 import { Youtube, Instagram, Send } from 'lucide-react';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, type ReactNode } from 'react';
 import CountUp from 'react-countup';
 import DemographicChart from './DemographicChart';
 import FadeInSection from './FadeInSection';
 import GlareHover from './GlareHover';
 
-const SocialStatCard = ({ icon, value, suffix, className, description, link }) => {
+interface SocialStatCardProps {
+  icon: ReactNode;
+  value: number;
+  suffix: string;
+  className: string;
+  description: string;
+  link: string;
+}
+
+const SocialStatCard = ({ icon, value, suffix, className, description, link }: SocialStatCardProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 

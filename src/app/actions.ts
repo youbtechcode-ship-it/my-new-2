@@ -34,7 +34,7 @@ async function sendSubscriberEmailToAdmin(data: z.infer<typeof subscriberSchema>
     console.warn("SMTP not configured, skipping admin email for subscriber.");
     return;
   }
-  const { name, whatsappNumber, message } = data;
+  const { name, whatsappNumber, message, messageType } = data;
 
   const emailHtml = `
     <h1>New Subscriber Message</h1>
@@ -43,6 +43,7 @@ async function sendSubscriberEmailToAdmin(data: z.infer<typeof subscriberSchema>
     <h2>Details:</h2>
     <p><strong>Name:</strong> ${name}</p>
     <p><strong>WhatsApp Number:</strong> ${whatsappNumber}</p>
+    <p><strong>Message Type:</strong> ${messageType}</p>
     <p><strong>Message:</strong></p>
     <p>${message}</p>
   `;
@@ -50,7 +51,7 @@ async function sendSubscriberEmailToAdmin(data: z.infer<typeof subscriberSchema>
   const mailOptions = {
     from: `"YBT Connect" <${process.env.SMTP_SENDER || 'noreply@example.com'}>`,
     to: "youbtechcode@gmail.com",
-    subject: `[Subscriber] New Message from ${name}`,
+    subject: `[Subscriber - ${messageType}] New Message from ${name}`,
     html: emailHtml,
   };
 
@@ -80,6 +81,12 @@ export async function submitSubscriberForm(
     return { success: true, message: 'Thank you! Your message has been delivered.' };
   } catch (error) {
     console.error('Error submitting subscriber form:', error);
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        message: error.issues.map(issue => `${issue.path.join('.')}: ${issue.message}`).join(', '),
+      };
+    }
     return { success: false, message: 'An unexpected error occurred. Please try again.' };
   }
 }
