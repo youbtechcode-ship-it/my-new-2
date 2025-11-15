@@ -12,8 +12,8 @@ const HeroSection = () => {
     return (
         <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden bg-background">
             <DotGrid
-                dotSize={2}
-                gap={25}
+                dotSize={1.5}
+                gap={30}
                 baseColor="hsl(var(--accent-hsl))"
                 activeColor="hsl(var(--primary-hsl))"
                 proximity={120}

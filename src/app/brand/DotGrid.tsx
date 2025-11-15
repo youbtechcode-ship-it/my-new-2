@@ -18,6 +18,15 @@ const throttle = (func: (...args: any[]) => void, limit: number) => {
   };
 };
 
+// Debounce function
+const debounce = (func: (...args: any[]) => void, delay: number) => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    return (...args: any[]) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func(...args), delay);
+    };
+};
+
 interface Dot {
   cx: number;
   cy: number;
@@ -144,7 +153,8 @@ const DotGrid: React.FC<DotGridProps> = ({
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const { width, height } = canvas;
+      ctx.clearRect(0, 0, width, height);
 
       const { x: px, y: py } = pointerRef.current;
       
@@ -183,8 +193,9 @@ const DotGrid: React.FC<DotGridProps> = ({
 
   useEffect(() => {
     buildGrid();
-    window.addEventListener('resize', buildGrid);
-    return () => window.removeEventListener('resize', buildGrid);
+    const debouncedBuildGrid = debounce(buildGrid, 250);
+    window.addEventListener('resize', debouncedBuildGrid);
+    return () => window.removeEventListener('resize', debouncedBuildGrid);
   }, [buildGrid]);
 
   useEffect(() => {
