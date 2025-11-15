@@ -36,7 +36,7 @@ export default function Home() {
       <main className="flex-grow">
       <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden bg-background">
           <div className="relative z-10">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-foreground">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-foreground mb-4">
                 Welcome to YBT Connect
               </h1>
               <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
