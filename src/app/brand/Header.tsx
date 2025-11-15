@@ -5,6 +5,8 @@ import { Menu } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
+  SheetHeader,
+  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Button } from '@/components/ui/button';
@@ -46,6 +48,9 @@ const Header = () => {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right">
+                  <SheetHeader>
+                    <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                  </SheetHeader>
                   <div className="flex flex-col items-center justify-center h-full">
                   <nav className="flex flex-col items-center gap-4 text-lg font-medium text-muted-foreground">
                      {navLinks.map((link) => (
