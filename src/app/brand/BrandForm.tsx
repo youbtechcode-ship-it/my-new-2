@@ -531,7 +531,7 @@ const Step4 = ({ budgetTier, budgetProgress }: { budgetTier: string; budgetProgr
                     type="number" 
                     placeholder="e.g., 500" 
                     {...field}
-                    onChange={e => field.onChange(e.target.value === '' ? 0 : e.target.valueAsNumber)}
+                    onChange={e => field.onChange(e.target.value)}
                 />
                 </FormControl>
                 <FormMessage />
@@ -676,7 +676,7 @@ const Step5 = () => {
                             <div className="w-full max-w-xs space-y-2">
                                 <div className="flex justify-between font-semibold text-lg">
                                     <span>Estimated Budget</span>
-                                    <span>${values.estimatedBudget.toLocaleString()}</span>
+                                    <span>${Number(values.estimatedBudget).toLocaleString()}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-muted-foreground">
                                     <span>Payment Method</span>

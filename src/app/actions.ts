@@ -295,13 +295,7 @@ export async function submitBrandForm(
   try {
     const { firestore } = initializeFirebase();
     
-    // Ensure estimatedBudget is a number before validation
-    const dataWithNumericBudget = {
-      ...data,
-      estimatedBudget: Number(data.estimatedBudget),
-    };
-
-    const validatedData = brandSchema.parse(dataWithNumericBudget);
+    const validatedData = brandSchema.parse(data);
 
     await addDoc(collection(firestore, 'brand_collaborations'), {
       ...validatedData,

@@ -33,7 +33,7 @@ export const brandSchema = z.object({
   platforms: z.array(z.string()).nonempty({ message: 'Please select at least one platform.' }),
   assetsLink: z.string().url().optional().or(z.literal('')),
   keywords: z.string().optional(),
-  estimatedBudget: z.number().min(300, 'Budget must be at least $300 USD.'),
+  estimatedBudget: z.coerce.number().min(300, 'Budget must be at least $300 USD.'),
   country: z.string().min(1, 'Please select your country.'),
   paymentMethod: z.enum(['upi', 'wise', 'paypal', 'debit-card', 'credit-card', 'bank-account'], {
     errorMap: () => ({ message: "Please select a payment method." }),
