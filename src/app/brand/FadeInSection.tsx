@@ -1,8 +1,8 @@
 'use client';
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, type ReactNode } from 'react';
 
-const FadeInSection = ({ children }) => {
+const FadeInSection = ({ children }: { children: ReactNode }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, margin: "-100px 0px" });
 
