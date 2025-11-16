@@ -28,7 +28,7 @@ const HeroSection = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.3 }}
                 >
-                    Connect with Your Audience
+                    Let's Collaborate
                 </motion.h1>
                 <motion.p
                     className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
